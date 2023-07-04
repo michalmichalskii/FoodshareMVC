@@ -27,12 +27,14 @@ namespace FoodshareMVC.Infrastructure.Repositories
                 _context.SaveChanges();
             }
         }
+
         public int AddUser(User user)
         {
             _context.Users.Add(user);
             _context.SaveChanges();
             return user.Id;
         }
+
         public int UpdateUser(User user)//??????
         {
             _context.Users.Update(user);

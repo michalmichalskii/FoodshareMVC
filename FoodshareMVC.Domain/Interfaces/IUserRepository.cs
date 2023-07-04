@@ -16,6 +16,5 @@ namespace FoodshareMVC.Domain.Interfaces
         int UpdateUser(User user);
 
         User GetUserById(int id);
-
     }
 }
