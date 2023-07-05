@@ -12,7 +12,7 @@ namespace FoodshareMVC.Domain.Models
         public string Text { get; set; }
         public DateTime CreateDateTime { get; set; }
         public DateTime UpdateDateTime { get; set; }
-        public int UserId { get; set; } //creator user Id
+        public int CreatorId { get; set; } //user Id,which made a post
         public User User { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Booking> Bookings { get; set; }

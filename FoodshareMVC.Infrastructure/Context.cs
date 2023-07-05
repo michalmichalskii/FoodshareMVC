@@ -36,6 +36,17 @@ namespace FoodshareMVC.Infrastructure
             builder.Entity<PostTag>()
                 .HasOne(pt => pt.Tag).WithMany(t => t.PostTags)
                 .HasForeignKey(pt => pt.TagId);
+
+            builder.Entity<Booking>()
+                .HasOne(u => u.User).WithMany(b => b.Bookings)
+                .HasForeignKey(u => u.BookerId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Post>()
+                .HasOne(u => u.User).WithMany(u => u.Posts)
+                .HasForeignKey(u => u.CreatorId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
         }
     }
 }

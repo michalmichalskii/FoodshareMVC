@@ -13,7 +13,7 @@ namespace FoodshareMVC.Domain.Models
         public Post Post { get; set; }
         public string PickUpMethod { get; set; }
         public string PickUpAddress { get; set; }
-        public int UserId { get; set; } //booker id
+        public int BookerId { get; set; } //user id, who actually books
         public User User { get; set; }
         public DateTime BookingExpirationDateTime { get; set; }
     }

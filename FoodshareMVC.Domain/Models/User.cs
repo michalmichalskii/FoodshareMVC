@@ -22,7 +22,6 @@ namespace FoodshareMVC.Domain.Models
 
         public ICollection<Post> Posts { get; set; }
         public ICollection<Comment> Comments { get; set; }
-
         public ICollection<Booking> Bookings { get; set; }
 
 
