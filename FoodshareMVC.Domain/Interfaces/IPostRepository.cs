@@ -13,10 +13,12 @@ namespace FoodshareMVC.Domain.Interfaces
         void DeletePost(int postId);
 
         int AddPost(Post post);
-
-        int UpdatePost(Post post);
+            
+        void UpdatePost(Post post);
+        Post GetPost(int id);
 
         IQueryable<Post> GetAllPosts();
+        IQueryable<Post> GetAllActivePosts();
 
         IQueryable<Post> GetAllSpecyficUserPosts(User user);
 
@@ -30,20 +32,12 @@ namespace FoodshareMVC.Domain.Interfaces
 
         IQueryable<Comment> GetAllCommentsInSecyficPost(int postId);
 
-
-        //Booking
-        void DeleteBooking(int bookingId);
-
-        int AddBooking(Booking booking);
-
-        IQueryable<Booking> GetAllBookings();
-
-
         //Tags
         void DeleteTag(int tagId);
 
         int AddTag(Tag tag);
 
         IQueryable<Tag> GetAllTags();
+
     }
 }

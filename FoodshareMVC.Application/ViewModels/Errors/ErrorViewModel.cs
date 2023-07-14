@@ -1,4 +1,4 @@
-namespace FoodshareMVC.Web.Models
+namespace FoodshareMVC.Application.ViewModels.Errors
 {
     public class ErrorViewModel
     {

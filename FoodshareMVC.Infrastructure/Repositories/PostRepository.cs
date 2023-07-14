@@ -18,12 +18,12 @@ namespace FoodshareMVC.Infrastructure.Repositories
         }
 
         //Post
-        public void DeletePost(int postId)
+        public void DeletePost(int id)
         {
-            var post = _context.Users.Find(postId);
+            var post = _context.Posts.Find(id);
             if (post != null)
             {
-                _context.Users.Remove(post);
+                _context.Posts.Remove(post);
                 _context.SaveChanges();
             }
         }
@@ -35,16 +35,26 @@ namespace FoodshareMVC.Infrastructure.Repositories
             return post.Id;
         }
 
-        public int UpdatePost(Post post)//??????
+        public void UpdatePost(Post post)
         {
-            _context.Posts.Update(post);
-            _context.SaveChanges();
-            return post.Id;
+            _context.Attach(post);
+            _context.Entry(post).Property("Text").IsModified = true;
+            _context.SaveChanges();    
+        }
+        public Post GetPost(int id)
+        {
+            var post = _context.Posts.Where(p => p.Id == id).FirstOrDefault();
+            return post;
         }
 
         public IQueryable<Post> GetAllPosts()
         {
             var posts = _context.Posts;
+            return posts;
+        }
+        public IQueryable<Post> GetAllActivePosts()
+        {
+            var posts = _context.Posts.Where(post => post.IsActive);
             return posts;
         }
 
@@ -94,30 +104,6 @@ namespace FoodshareMVC.Infrastructure.Repositories
             return comments;
         }
 
-        //Booking
-        public void DeleteBooking(int bookingId)
-        {
-            var booking = _context.Bookings.Find(bookingId);
-            if (booking != null)
-            {
-                _context.Bookings.Remove(booking);
-                _context.SaveChanges();
-            }
-        }
-
-        public int AddBooking(Booking booking)
-        {
-            _context.Bookings.Add(booking);
-            _context.SaveChanges();
-            return booking.Id;
-        }
-
-        public IQueryable<Booking> GetAllBookings()
-        {
-            var bookings = _context.Bookings;
-            return bookings;
-        }
-
         //Tags
         public void DeleteTag(int tagId)
         {
@@ -141,5 +127,7 @@ namespace FoodshareMVC.Infrastructure.Repositories
             var tags = _context.Tags;
             return tags;
         }
+
+
     }
 }

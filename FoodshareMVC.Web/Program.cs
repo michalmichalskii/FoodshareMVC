@@ -1,6 +1,16 @@
+using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FoodshareMVC.Application;
+using FoodshareMVC.Application.ViewModels.Post;
+using FoodshareMVC.Domain.Interfaces;
 using FoodshareMVC.Infrastructure;
+using FoodshareMVC.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Extensions.Logging;
+using Serilog.Formatting.Compact;
 
 namespace FoodshareMVC.Web
 {
@@ -10,6 +20,12 @@ namespace FoodshareMVC.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Logger configuration
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(new RenderedCompactJsonFormatter(), "Logs/myLog-{Date}.txt")
+                .CreateLogger();
+            builder.Logging.AddSerilog();
+
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<Context>(options =>
@@ -18,7 +34,15 @@ namespace FoodshareMVC.Web
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<Context>();
+
+            //TODO: wstrykianie wszystkich zale¿noœci
+            builder.Services.AddApplication();
+            builder.Services.AddInfrastructure();
+
+
             builder.Services.AddControllersWithViews();
+            builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+            builder.Services.AddTransient<IValidator<NewPostVm>, NewPostValidation>();
 
             var app = builder.Build();
 

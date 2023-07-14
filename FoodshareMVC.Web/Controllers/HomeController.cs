@@ -1,4 +1,4 @@
-﻿using FoodshareMVC.Web.Models;
+﻿using FoodshareMVC.Application.ViewModels.Errors;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,6 +15,7 @@ namespace FoodshareMVC.Web.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogInformation("Jestem w Home/Index");
             return View();
         }
 

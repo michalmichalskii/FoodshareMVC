@@ -14,6 +14,7 @@ namespace FoodshareMVC.Domain.Models
         public DateTime UpdateDateTime { get; set; }
         public int CreatorId { get; set; } //user Id,which made a post
         public User User { get; set; }
+        public bool IsActive { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<PostTag> PostTags { get; set; }

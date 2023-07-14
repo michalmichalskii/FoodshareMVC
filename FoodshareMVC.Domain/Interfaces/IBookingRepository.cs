@@ -7,15 +7,12 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Domain.Interfaces
 {
-    public interface IUserRepository
+    public interface IBookingRepository
     {
-        void DeleteUser(int userId);
+        void DeleteBooking(int bookingId);
 
-        int AddUser(User user);
+        int AddBooking(Booking booking);
 
-        int UpdateUser(User user);
-
-        User GetUser(int id);
-        User GetUserWithDetails(int id);
+        IQueryable<Booking> GetAllBookings();
     }
 }

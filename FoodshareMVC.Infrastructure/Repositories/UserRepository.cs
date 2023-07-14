@@ -42,7 +42,12 @@ namespace FoodshareMVC.Infrastructure.Repositories
             return user.Id;
         }
 
-        public User GetUserById(int id)
+        public User GetUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            return user;
+        }
+        public User GetUserWithDetails(int id)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             return user;
