@@ -20,12 +20,6 @@ namespace FoodshareMVC.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Logger configuration
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(new RenderedCompactJsonFormatter(), "Logs/myLog-{Date}.txt")
-                .CreateLogger();
-            builder.Logging.AddSerilog();
-
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<Context>(options =>
@@ -45,6 +39,10 @@ namespace FoodshareMVC.Web
             builder.Services.AddTransient<IValidator<NewPostVm>, NewPostValidation>();
 
             var app = builder.Build();
+
+            // Logger configuration
+            var loggerFactory = app.Services.GetService<ILoggerFactory>();
+            loggerFactory.AddFile(builder.Configuration["Logging:LogFilePath"].ToString());
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
