@@ -25,6 +25,7 @@ namespace FoodshareMVC.Web.Controllers
             var model = _postService.GetAllPostsForList(10, 1, "");
             return View(model);
         }
+
         [HttpPost]
         public IActionResult Index(int pageSize, int? pageNo, string searchString)
         {

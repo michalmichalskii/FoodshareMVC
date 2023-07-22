@@ -17,5 +17,6 @@ namespace FoodshareMVC.Domain.Interfaces
 
         User GetUser(int id);
         User GetUserWithDetails(int id);
+        IQueryable<Post> GetAllUserActivePosts(int userId);
     }
 }

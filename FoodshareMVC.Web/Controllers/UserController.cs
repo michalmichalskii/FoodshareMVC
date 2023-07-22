@@ -14,7 +14,7 @@ namespace FoodshareMVC.Web.Controllers
         [HttpGet("User/{id}")]
         public ActionResult Index(int id)
         {
-            var model = _userService.GetUser(id);
+            var model = _userService.GetUserWithActivePosts(id);
             return View(model);
         }
     }

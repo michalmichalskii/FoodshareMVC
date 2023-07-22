@@ -42,7 +42,8 @@ namespace FoodshareMVC.Application.Services
         {
             var posts = _postRepository.GetAllActivePosts()
                 .Where(p => p.Text.StartsWith(searchString))
-                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider).ToList();
+                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
+                .ToList();
             var postsToShow = posts
                 .Skip(pageSize * (pageNo - 1))
                 .Take(pageSize)
@@ -57,7 +58,6 @@ namespace FoodshareMVC.Application.Services
             };
             return postList;
         }
-
         public NewPostVm GetPostForEdit(int id)
         {
             var post = _postRepository.GetPost(id);

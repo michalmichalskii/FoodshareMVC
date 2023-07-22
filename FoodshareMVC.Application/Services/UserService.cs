@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FoodshareMVC.Application.ViewModels.Post;
 
 namespace FoodshareMVC.Application.Services
 {
@@ -21,11 +22,20 @@ namespace FoodshareMVC.Application.Services
             _mapper = mapper;
         }
 
-        public UserVm GetUser(int id)
-        {   
+        public UserWithPostsVm GetUserWithActivePosts(int id)
+        {
             var user = _userRepository.GetUser(id);
-            var userVm = _mapper.Map<UserVm>(user);
-            return userVm;
+            var mappedUser = _mapper.Map<UserVm>(user);
+                
+            var posts = _userRepository.GetAllUserActivePosts(id)
+                .Where(p => p.IsActive == true)
+                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider).ToList();
+            var model = new UserWithPostsVm()
+            {
+                User = mappedUser,
+                UserPosts = posts
+            };
+            return model;
         }
 
 

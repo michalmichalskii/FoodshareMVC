@@ -20,9 +20,6 @@ namespace FoodshareMVC.Domain.Interfaces
         IQueryable<Post> GetAllPosts();
         IQueryable<Post> GetAllActivePosts();
 
-        IQueryable<Post> GetAllSpecyficUserPosts(User user);
-
-
         //Comments
         void DeleteComment(int commentId, int postId);
 

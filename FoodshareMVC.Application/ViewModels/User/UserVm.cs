@@ -20,7 +20,7 @@ namespace FoodshareMVC.Application.ViewModels.User
         {
             profile.CreateMap<FoodshareMVC.Domain.Models.User, UserVm>()
                 .ForMember(s => s.FullName, opt => opt.MapFrom(d => d.FirstName + " " + d.LastName))
-                .ForMember(d => d.Posts, opt => opt.Ignore());
+                .ForMember(s => s.Posts, opt => opt.MapFrom(d => d.Posts.Where(p => p.CreatorId == Id)));
         }
     }
 }

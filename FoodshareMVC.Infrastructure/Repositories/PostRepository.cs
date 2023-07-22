@@ -39,7 +39,7 @@ namespace FoodshareMVC.Infrastructure.Repositories
         {
             _context.Attach(post);
             _context.Entry(post).Property("Text").IsModified = true;
-            _context.SaveChanges();    
+            _context.SaveChanges();
         }
         public Post GetPost(int id)
         {
@@ -52,19 +52,15 @@ namespace FoodshareMVC.Infrastructure.Repositories
             var posts = _context.Posts;
             return posts;
         }
+
         public IQueryable<Post> GetAllActivePosts()
         {
             var posts = _context.Posts.Where(post => post.IsActive);
             return posts;
         }
 
-        public IQueryable<Post> GetAllSpecyficUserPosts(User user)
-        {
-            var posts = _context.Posts.Where(p => p.User == user);
-            return posts;
-        }
-
         //Comments
+
         public void DeleteComment(int commentId, int postId)
         {
             var findedPost = _context.Posts.Find(postId);
