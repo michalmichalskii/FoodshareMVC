@@ -28,17 +28,29 @@ namespace FoodshareMVC.Infrastructure.Repositories
             }
         }
 
-        public int AddBooking(Booking booking)
-        {
-            _context.Bookings.Add(booking);
-            _context.SaveChanges();
-            return booking.Id;
-        }
-
         public IQueryable<Booking> GetAllBookings()
         {
             var bookings = _context.Bookings;
             return bookings;
+        }
+
+        public int AddBooking(int postId, Booking booking)
+        {
+            var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
+
+            if (post != null)
+            {
+                booking.PostId = post.Id;
+                booking.Post = post;
+                booking.BookingExpirationDateTime = DateTime.Now.AddDays(3);
+
+                _context.Bookings.Add(booking);
+                _context.SaveChanges();
+
+                return booking.Id;
+            }
+
+            return -1;
         }
     }
 }

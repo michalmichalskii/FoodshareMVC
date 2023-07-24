@@ -1,5 +1,7 @@
 ﻿using FoodshareMVC.Application.Interfaces;
+using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
+using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +10,12 @@ namespace FoodshareMVC.Web.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
+        private readonly IBookingService _bookingService;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IBookingService bookingService)
         {
             _postService = postService;
+            _bookingService = bookingService;
         }
         public IActionResult Index()
         {
@@ -41,6 +45,22 @@ namespace FoodshareMVC.Web.Controllers
             return View(model);
         }
 
+
+        //TODO - in index 
+        [HttpPost]
+        public IActionResult BookPost(int postId)
+        {
+            var model = new NewBookingVm
+            {
+                PickUpAddress = "Malwowa 3",
+                PickUpMethod = "odbiór osobisty",
+                BookerId = 1, // Stała wartość identyfikatora użytkownika (tutaj ustawiono na 1)
+            };
+
+            var id = _bookingService.AddBooking(postId, model);
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public IActionResult AddPost()
         {
@@ -64,7 +84,7 @@ namespace FoodshareMVC.Web.Controllers
         [HttpPost]
         public IActionResult EditPost(NewPostVm model)
         {
-            _postService.UpdateCustomer(model);
+            _postService.UpdatePost(model);
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
@@ -72,17 +92,5 @@ namespace FoodshareMVC.Web.Controllers
             _postService.DeletePost(id);
             return RedirectToAction("Index");
         }
-        //[HttpGet]
-        //public IActionResult AddComment(int postId)
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public IActionResult AddComment(CommentModel model)
-        //{
-        //    var id = _postService.AddComment(model);
-        //    return View();
-        //}
     }
 }

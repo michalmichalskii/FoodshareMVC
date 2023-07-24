@@ -14,7 +14,7 @@ namespace FoodshareMVC.Application.Interfaces
         ListPostForListVm GetAllPostsForList(int pageSize, int pageNo, string searchString);
         int AddPost(NewPostVm newPost);
         NewPostVm GetPostForEdit(int id);
-        void UpdateCustomer(NewPostVm model);
+        void UpdatePost(NewPostVm model);
         void DeletePost(int id);
     }
 }

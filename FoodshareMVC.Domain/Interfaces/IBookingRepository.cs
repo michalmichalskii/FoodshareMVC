@@ -11,8 +11,7 @@ namespace FoodshareMVC.Domain.Interfaces
     {
         void DeleteBooking(int bookingId);
 
-        int AddBooking(Booking booking);
-
+        int AddBooking(int postId, Booking booking);
         IQueryable<Booking> GetAllBookings();
     }
 }

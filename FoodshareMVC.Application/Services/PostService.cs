@@ -65,7 +65,7 @@ namespace FoodshareMVC.Application.Services
             return postVm;
         }
 
-        public void UpdateCustomer(NewPostVm model)
+        public void UpdatePost(NewPostVm model)
         {
             var post = _mapper.Map<Post>(model);
             _postRepository.UpdatePost(post);

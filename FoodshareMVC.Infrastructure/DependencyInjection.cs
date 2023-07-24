@@ -15,6 +15,7 @@ namespace FoodshareMVC.Infrastructure
         {
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IBookingRepository, BookingRepository>();
             return services;
         }
     }

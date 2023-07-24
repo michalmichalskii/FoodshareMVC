@@ -96,6 +96,13 @@
                 <div class="post-text">
                     @Html.DisplayFor(modelItem => post.Text)
                 </div>
+                <div class="">
+                    <form asp-action="BookPost" asp-controller="Post" method="post">
+                        <input type="hidden" asp-for="@post.Id" name="postId" />
+                        <!-- Dodaj pozostałe pola modelu NewBookingVm, jeśli są potrzebne -->
+                        <button type="submit" name="submitBtn">Book it!</button>
+                    </form>
+                </div>
                 @foreach (var comment in post.Comments)
                 {
                     <div class="comment-container">
@@ -128,3 +135,15 @@
         <input type="hidden" name="pageSize" id="pageSize" value="10" />
     </div>
 </form>
+
+@*@section Scripts
+    {
+    <script>
+        function PagerClick(index) {
+            document.getElementById("pageNo").value = index;
+            document.forms[0].submit();
+        }
+
+    </script>
+}*@
+
