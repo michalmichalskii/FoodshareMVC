@@ -27,14 +27,21 @@
             <div class="form-group">
                 <label asp-for="PickUpMethod" class="control-label"></label>
                 <select asp-for="PickUpMethod" name="pickUpMethod" value="PickUpMethod" class="form-control" id="pickUpMethodField">
-                    <option value="SelfPickUp">Odbiór osobisty</option>
-                    <option value="Delivery">Dostawa</option>
+                    @if (Model.PickUpMethod == "SelfPickUpAndDelivery")
+                    {
+                        <option value="SelfPickUp">SelfPickUp</option>
+                        <option value="Delivery">Delivery</option>
+                    }
+                    else
+                    {
+                        <option value="@Model.PickUpMethod">@Model.PickUpMethod</option>
+                    }
                 </select>
                 <span asp-validation-for="PickUpMethod" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PickUpAddress" class="control-label"></label>
-                <input asp-for="PickUpAddress" name="pickUpAddress" value="PickUpAddress" class="form-control" id="pickUpAddressField" />
+                <input asp-for="PickUpAddress" name="pickUpAddress" value="@Model.PickUpAddress" class="form-control" id="pickUpAddressField" />
                 <span asp-validation-for="PickUpAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -58,39 +65,22 @@
             var pickUpMethodField = document.getElementById('pickUpMethodField');
             var pickUpAddressField = document.getElementById('pickUpAddressField');
 
-            function togglePickUpFields() {
-                var pickUpMethodParam = getParameterValue('pickUpMethod');
-                if (pickUpMethodParam === 'SelfPickUpAndDelivery') {
+            function togglePickUpAddressField() {
+                if (pickUpMethodField.value === 'SelfPickUp') {
                     pickUpAddressField.setAttribute('readonly', 'readonly');
                 } else {
                     pickUpAddressField.removeAttribute('readonly');
                 }
             }
 
-            function getParameterValue(paramName) {
-                var urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(paramName);
-            }
-
-            var pickUpMethodParam = getParameterValue('pickUpMethod');
-
-            if (pickUpMethodParam) {
-                pickUpMethodField.value = pickUpMethodParam;
-            }
-
-            togglePickUpFields();
+            togglePickUpAddressField();
 
             pickUpMethodField.addEventListener('change', function () {
-                togglePickUpFields();
+                togglePickUpAddressField();
             });
         });
     </script>
-
-
-
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
