@@ -68,6 +68,9 @@
             function togglePickUpAddressField() {
                 if (pickUpMethodField.value === 'SelfPickUp') {
                     pickUpAddressField.setAttribute('readonly', 'readonly');
+                } else if (pickUpMethodField.value === 'Delivery') {
+                    pickUpAddressField.value = '';
+                    pickUpAddressField.removeAttribute('readonly');
                 } else {
                     pickUpAddressField.removeAttribute('readonly');
                 }
