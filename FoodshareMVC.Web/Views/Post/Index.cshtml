@@ -22,6 +22,7 @@
         font-weight: normal;
         transition: font-weight 0.2s;
     }
+
         .post-details a:hover {
             font-weight: bold;
         }
@@ -104,6 +105,10 @@
                 </div>
                 <div class="post-date">
                     @Html.DisplayFor(modelItem => post.PossibilityPickUpMethod)
+                    @if (post.PossibilityPickUpMethod == "SelfPickUp" || post.PossibilityPickUpMethod == "SelfPickUpAndDelivery")
+                    {
+                        <text>: @Html.DisplayFor(modelItem => post.PickUpAddress)</text>
+                    }
 
                 </div>
                 <div class="">

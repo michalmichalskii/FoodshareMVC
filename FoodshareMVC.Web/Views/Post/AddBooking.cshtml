@@ -67,6 +67,7 @@
 
             function togglePickUpAddressField() {
                 if (pickUpMethodField.value === 'SelfPickUp') {
+                    pickUpAddressField.value = '@Model.PickUpAddress';
                     pickUpAddressField.setAttribute('readonly', 'readonly');
                 } else if (pickUpMethodField.value === 'Delivery') {
                     pickUpAddressField.value = '';

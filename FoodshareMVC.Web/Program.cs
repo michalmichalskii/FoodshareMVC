@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FoodshareMVC.Application;
+using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Domain.Interfaces;
 using FoodshareMVC.Infrastructure;
@@ -35,6 +36,7 @@ namespace FoodshareMVC.Web
             builder.Services.AddControllersWithViews();
             builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
             builder.Services.AddTransient<IValidator<NewPostVm>, NewPostValidation>();
+            builder.Services.AddTransient<IValidator<NewBookingVm>, NewBookingValidation>();
 
             var app = builder.Build();
 

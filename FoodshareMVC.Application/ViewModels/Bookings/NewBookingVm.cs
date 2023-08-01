@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using FoodshareMVC.Application.Mapping;
+using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Domain.Models.BaseInherited;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,15 @@ namespace FoodshareMVC.Application.ViewModels.Bookings
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Booking, NewBookingVm>().ReverseMap();
+        }
+    }
+    public class NewBookingValidation : AbstractValidator<NewBookingVm>
+    {
+        public NewBookingValidation()
+        {
+            RuleFor(p => p.Id).NotNull();
+            RuleFor(p => p.PickUpAddress).NotNull();
+            RuleFor(p => p.PickUpAddress).MaximumLength(255);
         }
     }
 }
