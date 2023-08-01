@@ -1,4 +1,5 @@
 ﻿using FoodshareMVC.Application.ViewModels.Post;
+using FoodshareMVC.Application.ViewModels.Reviews;
 using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Domain.Models;
 using System;
@@ -11,7 +12,8 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IUserService
     {
+        int AddReview(NewReviewVm model);
         UserDetailVm GetUserDetail(int id);
-        UserWithPostsVm GetUserWithActivePosts(int id);
+        UserWithPostsAndReviewsVm GetUserWithActivePostsAndGottenReviews(int id);
     }
 }

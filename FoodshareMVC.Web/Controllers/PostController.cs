@@ -19,17 +19,11 @@ namespace FoodshareMVC.Web.Controllers
         }
         public IActionResult Index()
         {
-            //Utworzyc widok dla postów
-            //tabla z userami
-            //filtrowanie postów, np. jaki sposób przekazania
-            //przekazac filtry do serwisu
-            //serwis musi przygotować
-            //serwis musi zwrocic dane w odpowiednim formacie
-
             var model = _postService.GetAllPostsForList(10, 1, "");
             return View(model);
         }
 
+        //TODO - AFTER MAKING LOGGING SYSYEM - a logged user should see his posts first
         [HttpPost]
         public IActionResult Index(int pageSize, int? pageNo, string searchString)
         {
@@ -46,18 +40,25 @@ namespace FoodshareMVC.Web.Controllers
         }
 
 
-        //TODO - in index 
-        [HttpPost]
-        public IActionResult BookPost(int postId)
+        //TODO - in index button "book it" should disappear if post is not avaible to book
+        //TODO - AFTER MAKING LOGGING SYSYEM - after user logging, booking has to change const value of new booking to specyfic user one. Or maybe make separete form of booking makeing
+
+        [HttpGet("Post/AddBooking/{postId}")]
+        public IActionResult AddBooking(int postId, [FromQuery] string pickUpMethod, [FromQuery] string pickUpAddress)
         {
             var model = new NewBookingVm
             {
-                PickUpAddress = "Malwowa 3",
-                PickUpMethod = "odbiór osobisty",
-                BookerId = 1, // Stała wartość identyfikatora użytkownika (tutaj ustawiono na 1)
+                PostId = postId,
+                PickUpMethod = pickUpMethod,
+                PickUpAddress = pickUpAddress
             };
+            return View(model);
+        }
 
-            var id = _bookingService.AddBooking(postId, model);
+        [HttpPost]
+        public IActionResult AddBooking(NewBookingVm model)
+        {
+            var id = _bookingService.AddBooking(model.PostId, model);
             return RedirectToAction("Index");
         }
 

@@ -4,12 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FoodshareMVC.Domain.Models.Base;
 
-namespace FoodshareMVC.Domain.Models
+namespace FoodshareMVC.Domain.Models.BaseInherited
 {
-    public class User
+    public class User : BaseModel
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -21,7 +21,8 @@ namespace FoodshareMVC.Domain.Models
         public string Country { get; set; }
 
         public ICollection<Post> Posts { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Review> WrittenReviews { get; set; }
+        public ICollection<Review> MyReviews { get; set; }
         public ICollection<Booking> Bookings { get; set; }
 
 

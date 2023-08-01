@@ -1,4 +1,4 @@
-﻿@model FoodshareMVC.Application.ViewModels.User.UserWithPostsVm
+﻿@model FoodshareMVC.Application.ViewModels.User.UserWithPostsAndReviewsVm
 
 @{
     ViewData["Title"] = "Index";
@@ -14,6 +14,51 @@
     </dt>
 </h5>
 
+<p>
+    <div class="">
+        <h6>
+            </br>
+            </br>
+            Reviews
+        </h6>
+       
+        <form asp-action="AddReview" asp-controller="User" method="post">
+            <div class="form-group">
+                <input type="hidden" asp-for="@Model.NewReview.ReviewedUserId" name="reviewedUserId" value="@Model.User.Id" />
+                <input type="text" asp-for="NewReview.ReviewDescription" name="reviewDescription" class="form-control" placeholder="Write review..." />
+            </div>
+            <div class="form-group">
+                <label asp-for="NewReview.AmountOfStars" class="control-label">Amount of Stars</label>
+                <select asp-for="NewReview.AmountOfStars" name="amountOfStars" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <input type="hidden" name="reviewerId" value="1" />
+            <button type="submit" class="search-button">Add review</button>
+        </form>
+    </div>
+    @foreach (var item in Model.Rewievs)
+    {
+    <p>
+            @Html.DisplayFor(modelItem => item.Creator)
+    </p>
+    <p>
+            @Html.DisplayFor(modelItem => item.AmountOfStars)
+    </p>
+    <p>
+            @Html.DisplayFor(modelItem => item.ReviewDescription)
+    </p>
+    }
+</p>
+<h4>
+    </br>
+    </br>
+    Posts
+</h4>
 <table class="table">
     <tbody>
         @foreach (var item in Model.UserPosts)

@@ -1,5 +1,5 @@
 ﻿using FoodshareMVC.Domain.Interfaces;
-using FoodshareMVC.Domain.Models;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,8 @@ namespace FoodshareMVC.Infrastructure.Repositories
             return bookings;
         }
 
-        public int AddBooking(int postId, Booking booking)
+        //TODO - after expire date elapse and if host doesn't confirm pickup, post should come back to wall
+        public int AddBookingAndMakePostNotActive(int postId, Booking booking)
         {
             var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
 
@@ -43,6 +44,7 @@ namespace FoodshareMVC.Infrastructure.Repositories
                 booking.PostId = post.Id;
                 booking.Post = post;
                 booking.BookingExpirationDateTime = DateTime.Now.AddDays(3);
+                post.IsActive = false;
 
                 _context.Bookings.Add(booking);
                 _context.SaveChanges();

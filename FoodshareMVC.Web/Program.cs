@@ -29,10 +29,8 @@ namespace FoodshareMVC.Web
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<Context>();
 
-            //TODO: wstrykianie wszystkich zale¿noœci
             builder.Services.AddApplication();
             builder.Services.AddInfrastructure();
-
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
@@ -64,9 +62,10 @@ namespace FoodshareMVC.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //TODO  - AFTER MAKING LOGGING SYSYEM - make login/register page as start one
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Post}/{action=Index}/{id?}");
             app.MapRazorPages();
 
             app.Run();

@@ -27,6 +27,16 @@
                 <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="PossibilityPickUpMethod" class="control-label"></label>
+                <select asp-for="PossibilityPickUpMethod" class="form-control">
+                    <option value="">Select an option</option>
+                    <option value="SelfPickUp">Odbiór osobisty</option>
+                    <option value="Delivery">Możliwość dostarczenia</option>
+                    <option value="SelfPickUpAndDelivery">Odbiór osobisty oraz możliwość dostarczenia</option>
+                </select>
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

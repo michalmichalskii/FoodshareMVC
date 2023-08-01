@@ -3,7 +3,7 @@ using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Domain.Interfaces;
-using FoodshareMVC.Domain.Models;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace FoodshareMVC.Application.Services
         public int AddBooking(int postId, NewBookingVm newBooking)
         {
             var booking = _mapper.Map<Booking>(newBooking);
-            var id = _bookingRepository.AddBooking(postId, booking);
+            var id = _bookingRepository.AddBookingAndMakePostNotActive(postId, booking);
             return id;
         }
     }

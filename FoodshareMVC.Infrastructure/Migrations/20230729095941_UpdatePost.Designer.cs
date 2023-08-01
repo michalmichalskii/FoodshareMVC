@@ -4,6 +4,7 @@ using FoodshareMVC.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodshareMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230729095941_UpdatePost")]
+    partial class UpdatePost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +58,33 @@ namespace FoodshareMVC.Infrastructure.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -73,9 +102,6 @@ namespace FoodshareMVC.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PickUpAddress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PossibilityPickUpMethod")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,36 +118,6 @@ namespace FoodshareMVC.Infrastructure.Migrations
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<float>("AmountOfStars")
-                        .HasColumnType("real");
-
-                    b.Property<string>("ReviewDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReviewedUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReviewerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReviewedUserId");
-
-                    b.HasIndex("ReviewerId");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Tag", b =>
@@ -424,6 +420,25 @@ namespace FoodshareMVC.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Comment", b =>
+                {
+                    b.HasOne("FoodshareMVC.Domain.Models.BaseInherited.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FoodshareMVC.Domain.Models.BaseInherited.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Post", b =>
                 {
                     b.HasOne("FoodshareMVC.Domain.Models.BaseInherited.User", "User")
@@ -432,24 +447,6 @@ namespace FoodshareMVC.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Review", b =>
-                {
-                    b.HasOne("FoodshareMVC.Domain.Models.BaseInherited.User", "ReviewedUser")
-                        .WithMany("MyReviews")
-                        .HasForeignKey("ReviewedUserId")
-                        .IsRequired();
-
-                    b.HasOne("FoodshareMVC.Domain.Models.BaseInherited.User", "Reviewer")
-                        .WithMany("WrittenReviews")
-                        .HasForeignKey("ReviewerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ReviewedUser");
-
-                    b.Navigation("Reviewer");
                 });
 
             modelBuilder.Entity("FoodshareMVC.Domain.Models.PostTag", b =>
@@ -526,6 +523,8 @@ namespace FoodshareMVC.Infrastructure.Migrations
                 {
                     b.Navigation("Bookings");
 
+                    b.Navigation("Comments");
+
                     b.Navigation("PostTags");
                 });
 
@@ -538,11 +537,9 @@ namespace FoodshareMVC.Infrastructure.Migrations
                 {
                     b.Navigation("Bookings");
 
-                    b.Navigation("MyReviews");
+                    b.Navigation("Comments");
 
                     b.Navigation("Posts");
-
-                    b.Navigation("WrittenReviews");
                 });
 #pragma warning restore 612, 618
         }

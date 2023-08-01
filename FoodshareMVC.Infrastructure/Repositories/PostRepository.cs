@@ -1,5 +1,5 @@
 ﻿using FoodshareMVC.Domain.Interfaces;
-using FoodshareMVC.Domain.Models;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,68 +61,10 @@ namespace FoodshareMVC.Infrastructure.Repositories
 
         //Comments
 
-        public void DeleteComment(int commentId, int postId)
-        {
-            var findedPost = _context.Posts.Find(postId);
-            if (findedPost != null)
-            {
-                var comment = _context.Comments.Find(commentId);
-                if (comment != null)
-                {
-                    _context.Comments.Remove(comment);
-                    _context.SaveChanges();
-                }
-            }
-        }
-
-        public int AddComment(Comment comment, int postId)
-        {
-            var findedPost = _context.Posts.Find(postId);
-            if (findedPost != null)
-            {
-                _context.Comments.Add(comment);
-                _context.SaveChanges();
-                return comment.Id;
-            }
-            return 0;
-        }
-
-        public int UpdateComment(Comment comment)//??????
-        {
-            _context.Comments.Update(comment);
-            _context.SaveChanges();
-            return comment.Id;
-        }
-
-        public IQueryable<Comment> GetAllCommentsInSecyficPost(int postId)
-        {
-            var comments = _context.Comments.Where(p => postId == p.PostId);
-            return comments;
-        }
+       
 
         //Tags
-        public void DeleteTag(int tagId)
-        {
-            var tag = _context.Tags.Find(tagId);
-            if (tag != null)
-            {
-                _context.Tags.Remove(tag);
-                _context.SaveChanges();
-            }
-        }
-
-        public int AddTag(Tag tag)
-        {
-            _context.Tags.Add(tag);
-            _context.SaveChanges();
-            return tag.Id;
-        }
-
-        public IQueryable<Tag> GetAllTags()
-        {
-            var tags = _context.Tags;
-            return tags;
-        }
+        
 
 
     }

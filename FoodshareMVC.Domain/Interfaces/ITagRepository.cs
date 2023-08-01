@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Domain.Interfaces
 {
-    public interface IBookingRepository
+    public interface ITagRepository
     {
-        void DeleteBooking(int bookingId);
+        void DeleteTag(int tagId);
 
-        int AddBookingAndMakePostNotActive(int postId, Booking booking);
-        IQueryable<Booking> GetAllBookings();
+        int AddTag(Tag tag);
+
+        IQueryable<Tag> GetAllTags();
     }
 }

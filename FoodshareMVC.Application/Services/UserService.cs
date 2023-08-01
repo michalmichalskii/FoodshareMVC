@@ -9,20 +9,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FoodshareMVC.Application.ViewModels.Post;
+using FoodshareMVC.Application.ViewModels.Reviews;
+using FoodshareMVC.Domain.Models.BaseInherited;
 
 namespace FoodshareMVC.Application.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IReviewRepository reviewRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _reviewRepository  = reviewRepository;
             _mapper = mapper;
         }
 
-        public UserWithPostsVm GetUserWithActivePosts(int id)
+        public UserWithPostsAndReviewsVm GetUserWithActivePostsAndGottenReviews(int id)
         {
             var user = _userRepository.GetUser(id);
             var mappedUser = _mapper.Map<UserVm>(user);
@@ -30,8 +34,13 @@ namespace FoodshareMVC.Application.Services
             var posts = _userRepository.GetAllUserActivePosts(id)
                 .Where(p => p.IsActive == true)
                 .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider).ToList();
-            var model = new UserWithPostsVm()
+
+            var reviews = _reviewRepository.GetAllReviewsAboutUser(id)
+                .ProjectTo<ReviewForListVm>(_mapper.ConfigurationProvider).ToList();
+
+            var model = new UserWithPostsAndReviewsVm()
             {
+                Rewievs = reviews,
                 User = mappedUser,
                 UserPosts = posts
             };
@@ -44,6 +53,13 @@ namespace FoodshareMVC.Application.Services
             var user = _userRepository.GetUserWithDetails(id);
             var userVm = _mapper.Map<UserDetailVm>(user);
             return userVm;
+        }
+
+        public int AddReview(NewReviewVm newReview)
+        {
+            var review = _mapper.Map<Review>(newReview);
+            var id = _reviewRepository.AddReview(review);
+            return id;
         }
     }
 

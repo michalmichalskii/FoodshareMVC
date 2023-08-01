@@ -10,18 +10,20 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Application.ViewModels.Post
 {
-    public class NewPostVm : IMapFrom<FoodshareMVC.Domain.Models.Post>
+    public class NewPostVm : IMapFrom<Domain.Models.BaseInherited.Post>
     {
         public int Id { get; set; }
-        public int CreatorId { get; set; } //TODO: this should read which user is logged    
+        public int CreatorId { get; set; } //TODO - AFTER MAKING LOGGING SYSYEM - this should read which user is logged    
         public string Text { get; set; }
+        public string PossibilityPickUpMethod { get; set; }
+        public string? PickUpAddress { get; set; }
         public DateTime CreateDateTime { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
         public ICollection<PostTag> PostTags { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<NewPostVm, FoodshareMVC.Domain.Models.Post>().ReverseMap()
+            profile.CreateMap<NewPostVm, Domain.Models.BaseInherited.Post>().ReverseMap()
                 .ForMember(d => d.PostTags, opt => opt.Ignore());
         }
     }

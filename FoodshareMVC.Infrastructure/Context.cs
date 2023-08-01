@@ -1,9 +1,11 @@
 ﻿using FoodshareMVC.Domain.Models;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +14,7 @@ namespace FoodshareMVC.Infrastructure
     public class Context : IdentityDbContext
     {
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostTag> PostTag { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -46,6 +48,15 @@ namespace FoodshareMVC.Infrastructure
                 .HasOne(u => u.User).WithMany(u => u.Posts)
                 .HasForeignKey(u => u.CreatorId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Review>()
+                .HasOne(u => u.Reviewer).WithMany(o => o.WrittenReviews)
+                .HasForeignKey(u => u.ReviewerId);
+
+            builder.Entity<Review>()
+               .HasOne(u => u.ReviewedUser).WithMany(o => o.MyReviews)
+               .HasForeignKey(u => u.ReviewedUserId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
 
         }
     }

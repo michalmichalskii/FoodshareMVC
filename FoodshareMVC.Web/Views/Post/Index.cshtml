@@ -5,7 +5,6 @@
 }
 
 <style>
-    /* Custom styles for the post list */
     .post-container {
         border: 1px solid #ccc;
         background-color: #f9f9f9;
@@ -17,9 +16,15 @@
 
     .post-details {
         font-size: 16px;
-        font-weight: bold;
         margin-bottom: 10px;
+        text-decoration: none;
+        color: black;
+        font-weight: normal;
+        transition: font-weight 0.2s;
     }
+        .post-details a:hover {
+            font-weight: bold;
+        }
 
     .post-date {
         font-size: 14px;
@@ -73,16 +78,17 @@
     }
 </style>
 
-<h1>Index</h1>
+<h1>FoodShare</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="AddPost">Create New</a>
 </p>
 <form asp-action="Index" asp-controller="Post" method="post">
     <div class="search-bar">
         <input type="text" asp-for="SearchString" name="searchString" class="search-input" id="searchString" placeholder="Search posts..." />
         <button type="submit" class="search-button">Search</button>
     </div>
+
     <div class="row">
         @foreach (var post in Model.Posts)
         {
@@ -91,25 +97,18 @@
                     @Html.DisplayFor(modelItem => post.CreateDateTime)
                 </div>
                 <div class="post-details">
-                    @Html.DisplayFor(modelItem => post.Creator)
+                    <a href="@Url.Action("Index", "User", new { id = post.CreatorId })">@Html.DisplayFor(modelItem => post.Creator)</a>
                 </div>
                 <div class="post-text">
                     @Html.DisplayFor(modelItem => post.Text)
                 </div>
-                <div class="">
-                    <form asp-action="BookPost" asp-controller="Post" method="post">
-                        <input type="hidden" asp-for="@post.Id" name="postId" />
-                        <!-- Dodaj pozostałe pola modelu NewBookingVm, jeśli są potrzebne -->
-                        <button type="submit" name="submitBtn">Book it!</button>
-                    </form>
+                <div class="post-date">
+                    @Html.DisplayFor(modelItem => post.PossibilityPickUpMethod)
+
                 </div>
-                @foreach (var comment in post.Comments)
-                {
-                    <div class="comment-container">
-                        <div class="comment-user">@Html.DisplayFor(modelItem => comment.UserName)</div>
-                        <div class="comment-text">@Html.DisplayFor(modelItem => comment.Text)</div>
-                    </div>
-                }
+                <div class="">
+                    <a asp-action="AddBooking" asp-controller="Post" asp-route-postId="@post.Id" asp-route-pickUpMethod="@post.PossibilityPickUpMethod" asp-route-pickUpAddress="@post.PickUpAddress">Book it!</a>
+                </div>
             </div>
         }
     </div>
@@ -136,14 +135,13 @@
     </div>
 </form>
 
-@*@section Scripts
+@section Scripts
     {
     <script>
         function PagerClick(index) {
             document.getElementById("pageNo").value = index;
             document.forms[0].submit();
         }
-
     </script>
-}*@
+}
 

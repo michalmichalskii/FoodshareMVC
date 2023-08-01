@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FoodshareMVC.Application.Mapping;
-using FoodshareMVC.Domain.Models;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,7 @@ namespace FoodshareMVC.Application.ViewModels.Bookings
     public class NewBookingVm : IMapFrom<Booking>
     {
         public int Id { get; set; }
+        public int PostId { get; set; }
         public int BookerId { get; set; }
         public string PickUpMethod { get; set; }
         public string PickUpAddress { get; set; }

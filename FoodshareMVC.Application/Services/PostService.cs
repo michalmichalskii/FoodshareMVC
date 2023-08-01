@@ -2,11 +2,10 @@
 using AutoMapper.QueryableExtensions;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
-using FoodshareMVC.Application.ViewModels.Commentaries;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Tasks;
 using FoodshareMVC.Domain.Interfaces;
-using FoodshareMVC.Domain.Models;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;

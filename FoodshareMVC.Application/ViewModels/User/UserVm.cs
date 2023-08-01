@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Application.ViewModels.User
 {
-    public class UserVm : IMapFrom<FoodshareMVC.Domain.Models.User>
+    public class UserVm : IMapFrom<Domain.Models.BaseInherited.User>
     {
         public int Id { get; set; }
         public string FullName { get; set; }
@@ -18,7 +18,7 @@ namespace FoodshareMVC.Application.ViewModels.User
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<FoodshareMVC.Domain.Models.User, UserVm>()
+            profile.CreateMap<Domain.Models.BaseInherited.User, UserVm>()
                 .ForMember(s => s.FullName, opt => opt.MapFrom(d => d.FirstName + " " + d.LastName))
                 .ForMember(s => s.Posts, opt => opt.MapFrom(d => d.Posts.Where(p => p.CreatorId == Id)));
         }

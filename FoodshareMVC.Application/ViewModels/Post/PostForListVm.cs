@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FoodshareMVC.Application.Mapping;
-using FoodshareMVC.Application.ViewModels.Commentaries;
 using FoodshareMVC.Domain.Models;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +10,21 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Application.ViewModels.Post
 {
-    public class PostForListVm : IMapFrom<FoodshareMVC.Domain.Models.Post>
+    public class PostForListVm : IMapFrom<Domain.Models.BaseInherited.Post>
     {
         public int Id { get; set; }
         public string Text { get; set; }
         public DateTime CreateDateTime { get; set; }
         public string Creator { get; set; }
-        public ICollection<CommentVm> Comments { get; set; } //czy tu może być tak po prostu commentVm???????????   
+        public int CreatorId { get; set; }
+        public string PossibilityPickUpMethod { get; set; }
+        public string? PickUpAddress { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<PostTag> PostTags { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<FoodshareMVC.Domain.Models.Post, PostForListVm>()
+            profile.CreateMap<Domain.Models.BaseInherited.Post, PostForListVm>()
                 .ForMember(d => d.Creator, opt => opt.MapFrom(s => s.User.FirstName + " " + s.User.LastName))
                 .ForMember(d => d.Bookings, opt => opt.Ignore())
                 .ForMember(d => d.PostTags, opt => opt.Ignore());
