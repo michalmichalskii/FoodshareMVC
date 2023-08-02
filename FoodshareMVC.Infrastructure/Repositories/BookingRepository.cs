@@ -34,6 +34,22 @@ namespace FoodshareMVC.Infrastructure.Repositories
             return bookings;
         }
 
+        public void DeleteExpiredBookingAndMakePostActive(int postId)
+        {
+            var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();
+            if (post != null)
+            {
+                var booking = _context.Bookings.Where(b => b.PostId == postId);
+                var expiredBooking = booking.Where(eb => eb.BookingExpirationDateTime <= DateTime.Now).FirstOrDefault();
+                if(expiredBooking != null)
+                {
+                    _context.Bookings.Remove(expiredBooking);
+                    post.IsActive = true;
+                }
+                _context.SaveChanges();
+            }
+        }
+
         //TODO - after expire date elapse and if host doesn't confirm pickup, post should come back to wall
         public int AddBookingAndMakePostNotActive(int postId, Booking booking)
         {

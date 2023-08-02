@@ -17,9 +17,18 @@ namespace FoodshareMVC.Web.Controllers
             _postService = postService;
             _bookingService = bookingService;
         }
+
+        [HttpGet]
         public IActionResult Index()
         {
-            var model = _postService.GetAllPostsForList(10, 1, "");
+            var posts = _postService.GetAllPostsForList();
+            foreach (var post in posts.Posts)
+            {
+                _bookingService.DeleteExpiredBookingAndMakePostActive(post.Id);
+            }
+
+            var model = _postService.GetAllActivePostsForList(10, 1, "");
+
             return View(model);
         }
 
@@ -35,13 +44,14 @@ namespace FoodshareMVC.Web.Controllers
             {
                 searchString = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
             }
-            var model = _postService.GetAllPostsForList(pageSize, pageNo.Value, searchString);
+            var model = _postService.GetAllActivePostsForList(pageSize, pageNo.Value, searchString);
             return View(model);
         }
 
 
-        //TODO - in index button "book it" should disappear if post is not avaible to book
         //TODO - AFTER MAKING LOGGING SYSYEM - after user logging, booking has to change const value of new booking to specyfic user one. Or maybe make separete form of booking makeing
+        //TODO - imo url needs hash
+        //TODO - make a droplist filter - a possibility pickup method
 
         [HttpGet("Post/AddBooking/{postId}")]
         public IActionResult AddBooking(int postId, [FromQuery] string pickUpMethod, [FromQuery] string pickUpAddress)

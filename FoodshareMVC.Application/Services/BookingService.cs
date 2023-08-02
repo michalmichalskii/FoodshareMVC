@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.User;
@@ -28,6 +29,16 @@ namespace FoodshareMVC.Application.Services
             var booking = _mapper.Map<Booking>(newBooking);
             var id = _bookingRepository.AddBookingAndMakePostNotActive(postId, booking);
             return id;
+        }
+
+        public void DeleteBooking(int id)
+        {
+            _bookingRepository.DeleteBooking(id);
+        }
+
+        public void DeleteExpiredBookingAndMakePostActive(int postId)
+        {
+            _bookingRepository.DeleteExpiredBookingAndMakePostActive(postId);
         }
     }
 }

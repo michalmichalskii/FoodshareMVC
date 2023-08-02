@@ -11,10 +11,11 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IPostService
     {
-        ListPostForListVm GetAllPostsForList(int pageSize, int pageNo, string searchString);
+        ListPostForListVm GetAllActivePostsForList(int pageSize, int pageNo, string searchString);
         int AddPost(NewPostVm newPost);
         NewPostVm GetPostForEdit(int id);
         void UpdatePost(NewPostVm model);
         void DeletePost(int id);
+        ListPostForListVm GetAllPostsForList();
     }
 }
