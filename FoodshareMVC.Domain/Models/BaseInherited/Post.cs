@@ -17,6 +17,7 @@ namespace FoodshareMVC.Domain.Models.BaseInherited
         public User User { get; set; }
         public bool IsActive { get; set; }
         public string? PickUpAddress { get; set; }
+        public string City { get; set; }
         public ICollection<Booking> Bookings { get; set; }
         public ICollection<PostTag> PostTags { get; set; }
     }

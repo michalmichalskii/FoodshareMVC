@@ -18,5 +18,6 @@ namespace FoodshareMVC.Domain.Interfaces
 
         IQueryable<Post> GetAllPosts();
         IQueryable<Post> GetAllActivePosts();
+        IQueryable<Post> GetAllActivePostsByCity(string city);
     }
 }

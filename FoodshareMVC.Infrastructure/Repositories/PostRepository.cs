@@ -59,12 +59,18 @@ namespace FoodshareMVC.Infrastructure.Repositories
             return posts;
         }
 
+        public IQueryable<Post> GetAllActivePostsByCity(string city)
+        {
+            var posts = _context.Posts.Where(post => post.IsActive).Where(p => p.City == city);
+            return posts;
+        }
+
         //Comments
 
-       
+
 
         //Tags
-        
+
 
 
     }

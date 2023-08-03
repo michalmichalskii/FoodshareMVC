@@ -15,5 +15,6 @@ namespace FoodshareMVC.Application.ViewModels.Post
         public int PageSize { get; set; }
         public string SearchString { get; set; }
         public int Count { get; set; }
+        public string City { get; set; }
     }
 }

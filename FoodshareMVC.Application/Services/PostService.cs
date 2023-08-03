@@ -1,14 +1,20 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using FoodshareMVC.Application.Helpers;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Tasks;
 using FoodshareMVC.Domain.Interfaces;
 using FoodshareMVC.Domain.Models.BaseInherited;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,9 +43,19 @@ namespace FoodshareMVC.Application.Services
             _postRepository.DeletePost(id);
         }
 
-        public ListPostForListVm GetAllActivePostsForList(int pageSize, int pageNo, string searchString)
+        public List<PostForListVm> GetAllActivePostsByCity(string city)
         {
+            var posts = _postRepository.GetAllActivePosts().Where(p => p.City == city)
+                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
+                .ToList();
+            return posts;
+        }
+
+        public ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string searchString, string city)
+        {
+            
             var posts = _postRepository.GetAllActivePosts()
+                .Where(p => p.City == city)
                 .Where(p => p.Text.StartsWith(searchString))
                 .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
                 .ToList();
@@ -49,6 +65,7 @@ namespace FoodshareMVC.Application.Services
                 .ToList();
             var postList = new ListPostForListVm()
             {
+                City = city,
                 PageSize = pageSize,
                 SearchString = searchString,
                 CurrentPage = pageNo,

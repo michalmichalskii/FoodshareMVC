@@ -45,12 +45,12 @@ namespace FoodshareMVC.Infrastructure.Repositories
                 {
                     _context.Bookings.Remove(expiredBooking);
                     post.IsActive = true;
+                    _context.SaveChanges();
                 }
-                _context.SaveChanges();
             }
         }
 
-        //TODO - after expire date elapse and if host doesn't confirm pickup, post should come back to wall
+        //TODO - AFTER MAKING LOGGING SYSYEM - confirm pickup by post owner
         public int AddBookingAndMakePostNotActive(int postId, Booking booking)
         {
             var post = _context.Posts.Where(p => p.Id == postId).FirstOrDefault();

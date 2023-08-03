@@ -1,9 +1,14 @@
-﻿using FoodshareMVC.Application.Interfaces;
+﻿using FoodshareMVC.Application.Helpers;
+using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
+using FoodshareMVC.Application.ViewModels.Home;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Globalization;
+using System.Net;
 
 namespace FoodshareMVC.Web.Controllers
 {
@@ -27,14 +32,39 @@ namespace FoodshareMVC.Web.Controllers
                 _bookingService.DeleteExpiredBookingAndMakePostActive(post.Id);
             }
 
-            var model = _postService.GetAllActivePostsForList(10, 1, "");
+            //i dont know is this proper - there is a lot of code
+            var listOfPosts = new ListPostForListVm();
+            var ipInfo = new IPInfo();
+            try
+            {
+                string url = "https://ipinfo.io?token=97d6472d4b29b1";
+                var info = new WebClient().DownloadString(url);
+                ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
+                var myRII = new RegionInfo(ipInfo.Country);
+                ipInfo.Country = myRII.EnglishName;
+                listOfPosts.City = ipInfo.City;
+                if (ipInfo.City != null)
+                {
+                    listOfPosts.Posts = _postService.GetAllActivePostsByCity(listOfPosts.City);
+                }
+                else
+                {
+                    listOfPosts.Posts = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                listOfPosts.Posts = null;
+            }
 
+            var model = _postService.GetAllActivePostsInYourCityForList(10, 1, "", listOfPosts.City);
+            
             return View(model);
         }
 
         //TODO - AFTER MAKING LOGGING SYSYEM - a logged user should see his posts first
         [HttpPost]
-        public IActionResult Index(int pageSize, int? pageNo, string searchString)
+        public IActionResult Index(int pageSize, int? pageNo, string searchString, string city)
         {
             if (!pageNo.HasValue)
             {
@@ -44,7 +74,10 @@ namespace FoodshareMVC.Web.Controllers
             {
                 searchString = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
             }
-            var model = _postService.GetAllActivePostsForList(pageSize, pageNo.Value, searchString);
+
+            var model = _postService.GetAllActivePostsInYourCityForList(pageSize, pageNo.Value, searchString, city);
+
+
             return View(model);
         }
 
