@@ -3,6 +3,7 @@ using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Home;
 using FoodshareMVC.Application.ViewModels.Post;
+using FoodshareMVC.Application.ViewModels.Post.Filters;
 using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -42,10 +43,12 @@ namespace FoodshareMVC.Web.Controllers
                 ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
                 var myRII = new RegionInfo(ipInfo.Country);
                 ipInfo.Country = myRII.EnglishName;
-                listOfPosts.City = ipInfo.City;
+
+                listOfPosts.Filter.City = ipInfo.City;
+
                 if (ipInfo.City != null)
                 {
-                    listOfPosts.Posts = _postService.GetAllActivePostsByCity(listOfPosts.City);
+                    listOfPosts.Posts = _postService.GetAllActivePostsByCity(listOfPosts.Filter.City);
                 }
                 else
                 {
@@ -57,30 +60,41 @@ namespace FoodshareMVC.Web.Controllers
                 listOfPosts.Posts = null;
             }
 
-            var model = _postService.GetAllActivePostsInYourCityForList(10, 1, "", listOfPosts.City);
-            
+            var model = _postService.GetAllActivePostsInYourCityForList(10, 1, "", listOfPosts.Filter.City, "");
+            model.Filter = listOfPosts.Filter;
             return View(model);
         }
 
         //TODO - AFTER MAKING LOGGING SYSYEM - a logged user should see his posts first
         [HttpPost]
-        public IActionResult Index(int pageSize, int? pageNo, string searchString, string city)
+        public IActionResult Index(int pageSize, int? pageNo, string searchCreator, string city, string pickupMethod)
         {
             if (!pageNo.HasValue)
             {
                 pageNo = 1;
             }
-            if (searchString is null)
+            if (searchCreator is null)
             {
-                searchString = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
+                searchCreator = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
+            }
+            if (pickupMethod is null)
+            {
+                pickupMethod = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
             }
 
-            var model = _postService.GetAllActivePostsInYourCityForList(pageSize, pageNo.Value, searchString, city);
-
+            var model = _postService.GetAllActivePostsInYourCityForList(pageSize, pageNo.Value, searchCreator, city, pickupMethod);
+            model.Filter.SearchCreator = searchCreator;
+            model.Filter.City = city;
+            model.Filter.PickupMethod = pickupMethod;
 
             return View(model);
         }
 
+        [HttpPost]
+        public IActionResult DeleteFilter(FilterVm filter)
+        {
+            return View();
+        }
 
         //TODO - AFTER MAKING LOGGING SYSYEM - after user logging, booking has to change const value of new booking to specyfic user one. Or maybe make separete form of booking makeing
         //TODO - imo url needs hash
@@ -136,5 +150,6 @@ namespace FoodshareMVC.Web.Controllers
             _postService.DeletePost(id);
             return RedirectToAction("Index");
         }
+
     }
 }

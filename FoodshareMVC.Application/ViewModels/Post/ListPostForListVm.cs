@@ -1,4 +1,5 @@
-﻿    using System;
+﻿using FoodshareMVC.Application.ViewModels.Post.Filters;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -13,8 +14,7 @@ namespace FoodshareMVC.Application.ViewModels.Post
         public List<PostForListVm> Posts { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
-        public string SearchString { get; set; }
         public int Count { get; set; }
-        public string City { get; set; }
+        public FilterVm Filter { get; set; } = new FilterVm();
     }
 }

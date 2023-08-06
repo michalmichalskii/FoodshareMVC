@@ -11,7 +11,7 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IPostService
     {
-        ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string searchString, string city);
+        ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string? searchCreator, string? city, string? pickupMethod);
         int AddPost(NewPostVm newPost);
         NewPostVm GetPostForEdit(int id);
         void UpdatePost(NewPostVm model);

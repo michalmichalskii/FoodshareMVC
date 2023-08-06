@@ -51,12 +51,13 @@ namespace FoodshareMVC.Application.Services
             return posts;
         }
 
-        public ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string searchString, string city)
+        public ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string searchCreator, string city, string pickupMethod)
         {
             
             var posts = _postRepository.GetAllActivePosts()
                 .Where(p => p.City == city)
-                .Where(p => p.Text.StartsWith(searchString))
+                .Where(p => p.PossibilityPickUpMethod.Contains(pickupMethod.ToString()))
+                .Where(p => (p.User.FirstName + " " + p.User.LastName).StartsWith(searchCreator))
                 .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
                 .ToList();
             var postsToShow = posts
@@ -65,9 +66,7 @@ namespace FoodshareMVC.Application.Services
                 .ToList();
             var postList = new ListPostForListVm()
             {
-                City = city,
                 PageSize = pageSize,
-                SearchString = searchString,
                 CurrentPage = pageNo,
                 Posts = postsToShow,
                 Count = posts.Count
