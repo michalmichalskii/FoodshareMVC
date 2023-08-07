@@ -60,7 +60,7 @@ namespace FoodshareMVC.Web.Controllers
                 listOfPosts.Posts = null;
             }
 
-            var model = _postService.GetAllActivePostsInYourCityForList(10, 1, "", listOfPosts.Filter.City, "");
+            var model = _postService.GetAllActivePostsForList(10, 1, "", listOfPosts.Filter.City, "");
             model.Filter = listOfPosts.Filter;
             return View(model);
         }
@@ -82,7 +82,7 @@ namespace FoodshareMVC.Web.Controllers
                 pickupMethod = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
             }
 
-            var model = _postService.GetAllActivePostsInYourCityForList(pageSize, pageNo.Value, searchCreator, city, pickupMethod);
+            var model = _postService.GetAllActivePostsForList(pageSize, pageNo.Value, searchCreator, city, pickupMethod);
             model.Filter.SearchCreator = searchCreator;
             model.Filter.City = city;
             model.Filter.PickupMethod = pickupMethod;
@@ -90,15 +90,51 @@ namespace FoodshareMVC.Web.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult DeleteFilter(FilterVm filter)
+        [HttpGet]
+        public IActionResult RemoveFilter(int pageSize, int? pageNo, string searchCreator, string city, string pickupMethod, string filterType)
         {
-            return View();
+            if (!pageNo.HasValue)
+            {
+                pageNo = 1;
+            }
+            if (searchCreator is null)
+            {
+                searchCreator = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
+            }
+            if (pickupMethod is null)
+            {
+                pickupMethod = String.Empty; // to sprawia ze wyszukam wszystkie elementy w przypadku nie wpisania niczego
+            }
+            var model = _postService.GetAllActivePostsForList(pageSize, pageNo.Value, searchCreator, city, pickupMethod);
+
+            if (filterType == "city")
+            {
+                model.Filter.City = ""; 
+                model.Filter.SearchCreator = searchCreator;
+                model.Filter.PickupMethod = pickupMethod;
+            }
+            if (filterType == "pickupMethod")
+            {
+                model.Filter.PickupMethod = "";
+                model.Filter.SearchCreator = searchCreator;
+                model.Filter.City = city;
+            }
+            if (filterType == "searchCreator")
+            {
+                model.Filter.SearchCreator = "";
+                model.Filter.City = city;
+                model.Filter.PickupMethod = pickupMethod;
+            }
+            
+            var newModel = _postService.GetAllActivePostsForList(pageSize, pageNo.Value, model.Filter.SearchCreator, model.Filter.City, model.Filter.PickupMethod);
+            newModel.Filter.City = model.Filter.City;
+            newModel.Filter.SearchCreator = model.Filter.SearchCreator;
+            newModel.Filter.PickupMethod = model.Filter.PickupMethod;
+            return View("Index", newModel);
         }
 
         //TODO - AFTER MAKING LOGGING SYSYEM - after user logging, booking has to change const value of new booking to specyfic user one. Or maybe make separete form of booking makeing
         //TODO - imo url needs hash
-        //TODO - make a droplist filter - a possibility pickup method
 
         [HttpGet("Post/AddBooking/{postId}")]
         public IActionResult AddBooking(int postId, [FromQuery] string pickUpMethod, [FromQuery] string pickUpAddress)

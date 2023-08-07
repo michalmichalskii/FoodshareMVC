@@ -54,25 +54,31 @@
         margin-top: 5px;
     }
 
-    .filter {
-        padding: 10px; /* Dodaj padding, aby zawartość nie przylegała bezpośrednio do ramki */
-        border: 1px solid #ccc; /* Grubość i kolor ramki */
-        border-radius: 5px; /* Zaokrąglenie rogów ramki */
-        background-color: #f9f9f9; /* Kolor tła ramki */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Cień ramki */
-        margin: 5px; /* Odstęp od innych elementów */
+    .filter-container {
+        display: flex;
+        flex-direction: row; /* Ustaw elementy w jednej linii poziomo */
+        gap: 10px;
+        padding: 10px;
+        margin-bottom: 10px; /* Dodaj odstęp na dole */
     }
 
-    .filter-container {
-        display: flex; /* Ustawienie kontenera na flexbox */
-        flex-wrap: wrap; /* Pozwala elementom na "spadanie" na nową linię, jeśli brakuje miejsca */
-        gap: 10px; /* Dodaje odstęp między filtrami */
+    /* Zmodyfikuj reguły dla poszczególnych elementów filtrów */
+    .filter {
         padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        margin-bottom: 10px;
+        max-width: 200px;
     }
+
     /* Custom styles for the search bar */
     .search-bar {
         flex: 1;
         display: flex;
+        align-items: center;
         margin-bottom: 15px;
     }
 
@@ -88,45 +94,47 @@
 </style>
 
 <h1>FoodShare</h1>
-<h5>
-    <text>Your current location is: @Html.DisplayFor(model => model.Filter.City)</text>
-</h5>
 <p>
     <a asp-action="AddPost">Create New</a>
 </p>
 <form asp-action="Index" asp-controller="Post" method="post">
-    <div class="search-bar">
-        <input type="text" asp-for="Filter.SearchCreator" name="searchCreator" class="search-input" id="searchCreator" placeholder="Search an user..." />
-        <button type="submit" class="search-button">Search</button>
-    </div>
-    City:
-    <div class="search-bar">
-        <input type="text" asp-for="Filter.City" name="city" class="city-input" id="city" placeholder="Enter a city..." />
-        <button type="submit" class="search-button">Change</button>
-    </div>
-    Pickup method:
-    <div class="search-bar">
-        <select asp-for="Filter.PickupMethod" name="pickupMethod" class="pickupMethod-input" id="pickupMethod" placeholder="Enter a pickup method...">
-            <option value="" disabled selected>Enter a pickup method...</option>
-            <option value="SelfPickUp">Self-Pickup</option>
-            <option value="Delivery">Delivery</option>
-        </select>
+    
+    <div class="filter-container">
+        User:
+        <div class="search-bar">
+            <input type="text" asp-for="Filter.SearchCreator" name="searchCreator" class="search-input" id="searchCreator" placeholder="Search an user..." />
+        </div>
+        City:
+        <div class="search-bar">
+            <input type="text" asp-for="Filter.City" name="city" class="city-input" id="city" placeholder="Enter a city..." />
+        </div>
+        Pickup method:
+        <div class="search-bar">
+            <select asp-for="Filter.PickupMethod" name="pickupMethod" class="pickupMethod-input" id="pickupMethod" placeholder="Enter a pickup method...">
+                <option value="" disabled selected>Enter a pickup method...</option>
+                <option value="SelfPickUp">Self-Pickup</option>
+                <option value="Delivery">Delivery</option>
+            </select>
+        </div>
         <button type="submit" class="search-button">Search</button>
     </div>
     <div class="row">
-        <div class="filters filter-container">
-            @if (!string.IsNullOrEmpty(Model.Filter.SearchCreator))
-            {
-                <div class="filter">@Model.Filter.SearchCreator</div>
-            }
+        <div class="filters">
+
             @if (!string.IsNullOrEmpty(Model.Filter.City))
             {
-                <div class="filter">@Model.Filter.City</div>
+                <div class="filter">@Model.Filter.City <a href="@Url.Action("RemoveFilter", new { filterType = "city", pageSize = 10, pageNo = 1, searchCreator = Model.Filter.SearchCreator, city = Model.Filter.City, pickupMethod = Model.Filter.PickupMethod })">x</a></div>
             }
             @if (!string.IsNullOrEmpty(Model.Filter.PickupMethod))
             {
-                <div class="filter">@Model.Filter.PickupMethod</div>
+                <div class="filter">@Model.Filter.PickupMethod <a href="@Url.Action("RemoveFilter", new { filterType = "pickupMethod", pageSize = 10, pageNo = 1, searchCreator = Model.Filter.SearchCreator, city = Model.Filter.City, pickupMethod = Model.Filter.PickupMethod })">x</a></div>
             }
+            @if (!string.IsNullOrEmpty(Model.Filter.SearchCreator))
+            {
+                <div class="filter">@Model.Filter.SearchCreator <a href="@Url.Action("RemoveFilter", new { filterType = "searchCreator", pageSize = 10, pageNo = 1, searchCreator = Model.Filter.SearchCreator, city = Model.Filter.City, pickupMethod = Model.Filter.PickupMethod })">x</a></div>
+            }
+
+
         </div>
     </div>
     <div class="row">
