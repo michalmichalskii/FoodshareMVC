@@ -1,7 +1,6 @@
 ﻿using FoodshareMVC.Application.Helpers;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
-using FoodshareMVC.Application.ViewModels.Home;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Post.Filters;
 using FoodshareMVC.Application.ViewModels.User;

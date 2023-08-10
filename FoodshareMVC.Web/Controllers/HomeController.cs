@@ -1,7 +1,6 @@
 ﻿using FoodshareMVC.Application.Helpers;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Errors;
-using FoodshareMVC.Application.ViewModels.Home;
 using FoodshareMVC.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

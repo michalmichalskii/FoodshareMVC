@@ -1,4 +1,5 @@
-﻿using FoodshareMVC.Domain.Models.BaseInherited;
+﻿using FoodshareMVC.Application.ViewModels.Reviews;
+using FoodshareMVC.Domain.Models.BaseInherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IReviewService
     {
+        List<ReviewForListVm> GetAllReviewsOfUser(int userId);
     }
 }

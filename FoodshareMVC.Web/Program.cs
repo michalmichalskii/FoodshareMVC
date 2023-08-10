@@ -4,9 +4,11 @@ using FluentValidation.AspNetCore;
 using FoodshareMVC.Application;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
+using FoodshareMVC.Application.ViewModels.Reviews;
 using FoodshareMVC.Domain.Interfaces;
 using FoodshareMVC.Infrastructure;
 using FoodshareMVC.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -37,6 +39,7 @@ namespace FoodshareMVC.Web
             builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
             builder.Services.AddTransient<IValidator<NewPostVm>, NewPostValidation>();
             builder.Services.AddTransient<IValidator<NewBookingVm>, NewBookingValidation>();
+            builder.Services.AddTransient<IValidator<NewReviewVm>, NewReviewValidation>();
 
             var app = builder.Build();
 

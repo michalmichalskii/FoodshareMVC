@@ -13,7 +13,8 @@ namespace FoodshareMVC.Domain.Models.BaseInherited
         public User Reviewer { get; set; }
         public int ReviewedUserId { get; set; }
         public User ReviewedUser { get; set; }
-        public float AmountOfStars { get; set; }
-        public string ReviewDescription { get; set; }
+        public int AmountOfStars { get; set; }
+        public string? ReviewDescription { get; set; }
+        public DateTime CreateDateTime { get; set; }
     }
 }

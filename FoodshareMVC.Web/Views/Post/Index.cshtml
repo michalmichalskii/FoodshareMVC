@@ -56,13 +56,12 @@
 
     .filter-container {
         display: flex;
-        flex-direction: row; /* Ustaw elementy w jednej linii poziomo */
+        flex-direction: row;
         gap: 10px;
         padding: 10px;
-        margin-bottom: 10px; /* Dodaj odstęp na dole */
+        margin-bottom: 10px;
     }
 
-    /* Zmodyfikuj reguły dla poszczególnych elementów filtrów */
     .filter {
         padding: 10px;
         border: 1px solid #ccc;
@@ -74,7 +73,6 @@
         max-width: 200px;
     }
 
-    /* Custom styles for the search bar */
     .search-bar {
         flex: 1;
         display: flex;
@@ -145,7 +143,7 @@
                     @Html.DisplayFor(modelItem => post.CreateDateTime)
                 </div>
                 <div class="post-details">
-                    <a href="@Url.Action("Index", "User", new { id = post.CreatorId })">@Html.DisplayFor(modelItem => post.Creator)</a>
+                    <a href="@Url.Action("Index", "User", new { Id = post.CreatorId })">@Html.DisplayFor(modelItem => post.Creator)</a>
                 </div>
                 <div class="post-text">
                     @Html.DisplayFor(modelItem => post.Text)

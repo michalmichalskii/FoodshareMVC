@@ -22,31 +22,36 @@ namespace FoodshareMVC.Application.Services
         public UserService(IUserRepository userRepository, IReviewRepository reviewRepository, IMapper mapper)
         {
             _userRepository = userRepository;
-            _reviewRepository  = reviewRepository;
+            _reviewRepository = reviewRepository;
             _mapper = mapper;
         }
 
-        public UserWithPostsAndReviewsVm GetUserWithActivePostsAndGottenReviews(int id)
+        public UserVm GetUserWithActivePostsAndGottenReviews(int id)
         {
             var user = _userRepository.GetUser(id);
             var mappedUser = _mapper.Map<UserVm>(user);
-                
+
             var posts = _userRepository.GetAllUserActivePosts(id)
                 .Where(p => p.IsActive == true)
-                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider).ToList();
+                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
+                .OrderByDescending(p => p.CreateDateTime)
+                .ToList();
 
             var reviews = _reviewRepository.GetAllReviewsAboutUser(id)
-                .ProjectTo<ReviewForListVm>(_mapper.ConfigurationProvider).ToList();
+                .ProjectTo<ReviewForListVm>(_mapper.ConfigurationProvider)
+                .OrderByDescending(r => r.CreateDateTime)
+                .ToList();
 
-            var model = new UserWithPostsAndReviewsVm()
+            var model = new UserVm()
             {
+                Id = id,
+                City = mappedUser.City,
+                FullName = mappedUser.FullName,
                 Rewievs = reviews,
-                User = mappedUser,
                 UserPosts = posts
             };
             return model;
         }
-
 
         public UserDetailVm GetUserDetail(int id)
         {
@@ -61,6 +66,8 @@ namespace FoodshareMVC.Application.Services
             var id = _reviewRepository.AddReview(review);
             return id;
         }
+
+
     }
 
 }

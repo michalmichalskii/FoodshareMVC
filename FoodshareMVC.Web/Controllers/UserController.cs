@@ -9,35 +9,55 @@ namespace FoodshareMVC.Web.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IReviewService _reviewService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IReviewService reviewService)
         {
             _userService = userService;
+            _reviewService = reviewService;
         }
         [HttpGet("User/{id}")]
         public ActionResult Index(int id)
         {
             var model = _userService.GetUserWithActivePostsAndGottenReviews(id);
+
+            var reviews = _reviewService.GetAllReviewsOfUser(id);
+            int countOfReviews = reviews.Count();
+            decimal sumOfStars = 0;
+
+            foreach (var review in reviews)
+            {
+                sumOfStars += review.AmountOfStars;
+            }
+            if(countOfReviews > 0)
+            {
+                var starAverage = sumOfStars / countOfReviews;
+                model.StarAverage = starAverage;
+            }
+
             return View(model);
         }
 
-        //TODO - if logged user already wrote review he cannot write another one, also his review should appear first
+        
+        //TODO - AFTER MAKING LOGGING SYSYEM - if logged user already wrote review he cannot write another one, also his review should appear first
         //TODO - AFTER MAKING LOGGING SYSYEM - if user id logged change (in INDEX.cshtml) cont value of revieverId
         //TODO - make rating system like a star rate, not like a droplist of numbers
         //TODO - show rating of user under info about him
 
         [HttpPost]
-        public ActionResult AddReview(int reviewedUserId,string reviewDescription, float amountOfStars, int reviewerId)
+        public ActionResult AddReview(NewReviewVm newReview)
         {
-            var model = new NewReviewVm()
+            try
             {
-                ReviewedUserId = reviewedUserId,
-                ReviewDescription = reviewDescription,
-                AmountOfStars = amountOfStars,
-                ReviewerId = reviewerId
-            };
-            var id = _userService.AddReview(model);
-            return RedirectToAction($"Index", new { id = reviewedUserId});
+                newReview.CreateDateTime = DateTime.Now;
+                newReview.AmountOfStars = 0;
+                var res = _userService.AddReview(newReview);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return RedirectToAction($"Index", new { id = newReview.ReviewedUserId});
         }
     }
 }

@@ -28,6 +28,12 @@ namespace FoodshareMVC.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public IQueryable<Review> GetAllReviews()
+        {
+            var reviews = _context.Reviews;
+            return reviews;
+        }
+
         public IQueryable<Review> GetAllReviewsAboutUser(int userId)
         {
             var reviews = _context.Reviews.Where(u => u.ReviewedUserId == userId);

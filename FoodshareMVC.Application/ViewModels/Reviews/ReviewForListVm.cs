@@ -13,8 +13,10 @@ namespace FoodshareMVC.Application.ViewModels.Reviews
     {
         public int Id { get; set; }
         public string Creator { get; set; }
-        public float AmountOfStars { get; set; }
-        public string ReviewDescription { get; set; }
+        public int AmountOfStars { get; set; }
+        public string? ReviewDescription { get; set; }
+        public DateTime CreateDateTime { get; set; }
+
 
         public void Mapping(Profile profile)
         {
