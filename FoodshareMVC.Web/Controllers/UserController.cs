@@ -50,8 +50,8 @@ namespace FoodshareMVC.Web.Controllers
             try
             {
                 newReview.CreateDateTime = DateTime.Now;
-                newReview.AmountOfStars = 0;
                 var res = _userService.AddReview(newReview);
+                var iv = ModelState.IsValid;
             }
             catch (Exception)
             {
