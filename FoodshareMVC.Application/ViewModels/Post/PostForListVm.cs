@@ -13,6 +13,7 @@ namespace FoodshareMVC.Application.ViewModels.Post
     public class PostForListVm : IMapFrom<Domain.Models.BaseInherited.Post>
     {
         public int Id { get; set; }
+        public string? Image { get; set; }
         public string Text { get; set; }
         public DateTime CreateDateTime { get; set; }
         public string Creator { get; set; }

@@ -148,6 +148,12 @@
                 <div class="post-text">
                     @Html.DisplayFor(modelItem => post.Text)
                 </div>
+                <div class="image">
+                    @if (post.Image != null)
+                    {
+                        <img class="some-image" src="@post.Image" alt="Card image cap">
+                    }
+                </div>
                 <div class="post-date">
                     @Html.DisplayFor(modelItem => post.PossibilityPickUpMethod)
                     @if (post.PossibilityPickUpMethod == "SelfPickUp" || post.PossibilityPickUpMethod == "SelfPickUpAndDelivery")

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,16 +25,24 @@ namespace FoodshareMVC.Application.Services
     {
         private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
-        public PostService(IPostRepository postRepository, IMapper mapper)
+        public PostService(IPostRepository postRepository, IMapper mapper, IPhotoService photoService)
         {
             _postRepository = postRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
         public int AddPost(NewPostVm newPost)
         {
+            var result = _photoService.AddPhoto(newPost.Image);
+
             var post = _mapper.Map<Post>(newPost);
+            if (post.Image != null)
+            {
+                post.Image = result.Url.ToString();
+            }
             var id = _postRepository.AddPost(post);
             return id;
         }

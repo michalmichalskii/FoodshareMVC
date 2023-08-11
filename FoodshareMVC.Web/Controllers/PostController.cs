@@ -16,11 +16,13 @@ namespace FoodshareMVC.Web.Controllers
     {
         private readonly IPostService _postService;
         private readonly IBookingService _bookingService;
+        private readonly IPhotoService _photoService;
 
-        public PostController(IPostService postService, IBookingService bookingService)
+        public PostController(IPostService postService, IBookingService bookingService, IPhotoService photoService)
         {
             _postService = postService;
             _bookingService = bookingService;
+            _photoService = photoService;
         }
 
         [HttpGet]
@@ -108,7 +110,7 @@ namespace FoodshareMVC.Web.Controllers
 
             if (filterType == "city")
             {
-                model.Filter.City = ""; 
+                model.Filter.City = "";
                 model.Filter.SearchCreator = searchCreator;
                 model.Filter.PickupMethod = pickupMethod;
             }
@@ -124,7 +126,7 @@ namespace FoodshareMVC.Web.Controllers
                 model.Filter.City = city;
                 model.Filter.PickupMethod = pickupMethod;
             }
-            
+
             var newModel = _postService.GetAllActivePostsForList(pageSize, pageNo.Value, model.Filter.SearchCreator, model.Filter.City, model.Filter.PickupMethod);
             newModel.Filter.City = model.Filter.City;
             newModel.Filter.SearchCreator = model.Filter.SearchCreator;

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodshareMVC.Web", "FoodshareMVC.Web\FoodshareMVC.Web.csproj", "{CED143CB-4BCC-479C-B7D6-E00DD77BC4C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodshareMVC.Web", "FoodshareMVC.Web\FoodshareMVC.Web.csproj", "{CED143CB-4BCC-479C-B7D6-E00DD77BC4C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{CAB5F2A4-1481-45DF-A04D-B753B710901E}"
 EndProject
@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2E0C310E-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{3094AE84-1C9B-4F83-B656-38BC6BC0F1E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodshareMVC.Application", "FoodshareMVC.Application\FoodshareMVC.Application.csproj", "{07DC59CD-3572-4581-BF50-BD60EDE9B998}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodshareMVC.Application", "FoodshareMVC.Application\FoodshareMVC.Application.csproj", "{07DC59CD-3572-4581-BF50-BD60EDE9B998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodshareMVC.Domain", "FoodshareMVC.Domain\FoodshareMVC.Domain.csproj", "{B2972676-081E-4152-B548-43852152CEEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodshareMVC.Domain", "FoodshareMVC.Domain\FoodshareMVC.Domain.csproj", "{B2972676-081E-4152-B548-43852152CEEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodshareMVC.Infrastructure", "FoodshareMVC.Infrastructure\FoodshareMVC.Infrastructure.csproj", "{6661A7C6-E0BE-4C47-83BB-F68EAB28287C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodshareMVC.Infrastructure", "FoodshareMVC.Infrastructure\FoodshareMVC.Infrastructure.csproj", "{6661A7C6-E0BE-4C47-83BB-F68EAB28287C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodshareMVC.Test", "FoodshareMVC.Test\FoodshareMVC.Test.csproj", "{4FF6BFBC-5CAA-4060-B23F-EA7862BE94FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodshareMVC.Test", "FoodshareMVC.Test\FoodshareMVC.Test.csproj", "{4FF6BFBC-5CAA-4060-B23F-EA7862BE94FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

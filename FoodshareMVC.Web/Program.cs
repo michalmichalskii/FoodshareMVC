@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FoodshareMVC.Application;
+using FoodshareMVC.Application.Helpers;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Reviews;
@@ -34,6 +35,8 @@ namespace FoodshareMVC.Web
 
             builder.Services.AddApplication();
             builder.Services.AddInfrastructure();
+
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();

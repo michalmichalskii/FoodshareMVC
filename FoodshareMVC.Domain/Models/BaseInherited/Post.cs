@@ -9,6 +9,7 @@ namespace FoodshareMVC.Domain.Models.BaseInherited
 {
     public class Post : BaseModel
     {
+        public string? Image { get; set; }
         public string Text { get; set; }
         public DateTime CreateDateTime { get; set; }
         public DateTime UpdateDateTime { get; set; }

@@ -2,6 +2,7 @@
 using FluentValidation;
 using FoodshareMVC.Application.Mapping;
 using FoodshareMVC.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace FoodshareMVC.Application.ViewModels.Post
         public DateTime CreateDateTime { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
         public ICollection<PostTag> PostTags { get; set; }
+        public IFormFile? Image { get; set; }
+        public string City { get; set; }
 
         public void Mapping(Profile profile)
         {

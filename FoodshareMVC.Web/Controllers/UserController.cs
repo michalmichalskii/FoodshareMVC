@@ -41,8 +41,6 @@ namespace FoodshareMVC.Web.Controllers
         
         //TODO - AFTER MAKING LOGGING SYSYEM - if logged user already wrote review he cannot write another one, also his review should appear first
         //TODO - AFTER MAKING LOGGING SYSYEM - if user id logged change (in INDEX.cshtml) cont value of revieverId
-        //TODO - make rating system like a star rate, not like a droplist of numbers
-        //TODO - show rating of user under info about him
 
         [HttpPost]
         public ActionResult AddReview(NewReviewVm newReview)
