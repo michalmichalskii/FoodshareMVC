@@ -13,7 +13,6 @@ namespace FoodshareMVC.Application.Interfaces
     public interface IBookingService
     {
         int AddBooking(int postId, NewBookingVm newBooking);
-        void DeleteBooking(int id);
-        void DeleteExpiredBookingAndMakePostActive(int postId);
+        void DeleteExpiredBooking();
     }
 }

@@ -17,28 +17,37 @@ namespace FoodshareMVC.Application.Services
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly IMapper _mapper;
+        private readonly IPostRepository _postRepsitory;
 
-        public BookingService(IBookingRepository bookingRepository, IMapper mapper)
+        public BookingService(IBookingRepository bookingRepository, IMapper mapper, IPostRepository postRepository)
         {
             _bookingRepository = bookingRepository;
             _mapper = mapper;
+            _postRepsitory = postRepository;
         }
 
+
+        //TODO - AFTER MAKING LOGGING SYSYEM - confirm pickup by post owner
         public int AddBooking(int postId, NewBookingVm newBooking)
         {
             var booking = _mapper.Map<Booking>(newBooking);
-            var id = _bookingRepository.AddBookingAndMakePostNotActive(postId, booking);
-            return id;
+            var post = _postRepsitory.GetPost(postId);
+            if (post != null)
+            {
+                booking.BookingExpirationDateTime = DateTime.Now.AddDays(2);
+                var id = _bookingRepository.AddBooking(postId, booking);
+                return id;
+            }
+            else
+            {
+                return -1;
+            }
         }
-
-        public void DeleteBooking(int id)
+        public void DeleteExpiredBooking()
         {
-            _bookingRepository.DeleteBooking(id);
-        }
+            var expriredBookings = _bookingRepository.GetAllBookings().Where(p => p.BookingExpirationDateTime <= DateTime.Now);
 
-        public void DeleteExpiredBookingAndMakePostActive(int postId)
-        {
-            _bookingRepository.DeleteExpiredBookingAndMakePostActive(postId);
+            _bookingRepository.DeleteRangeOfBookings(expriredBookings);
         }
     }
 }

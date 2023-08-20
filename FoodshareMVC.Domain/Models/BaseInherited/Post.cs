@@ -19,7 +19,7 @@ namespace FoodshareMVC.Domain.Models.BaseInherited
         public bool IsActive { get; set; }
         public string? PickUpAddress { get; set; }
         public string City { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
+        public Booking Booking { get; set; }
         public ICollection<PostTag> PostTags { get; set; }
     }
 }

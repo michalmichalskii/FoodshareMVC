@@ -64,5 +64,29 @@ namespace FoodshareMVC.Infrastructure.Repositories
             var posts = _context.Posts.Where(post => post.IsActive).Where(p => p.City == city);
             return posts;
         }
+
+        public int SetPostActive(int postId)
+        {
+            var post = _context.Posts.FirstOrDefault(post => post.Id == postId);
+            if(post != null)
+            {
+                post.IsActive = true;
+                _context.SaveChanges();
+                return post.Id;
+            }
+            return -1;
+        }
+
+        public int SetPostNotActive(int postId)
+        {
+            var post = _context.Posts.FirstOrDefault(post => post.Id == postId);
+            if (post != null)
+            {
+                post.IsActive = false;
+                _context.SaveChanges();
+                return post.Id;
+            }
+            return -1;
+        }
     }
 }

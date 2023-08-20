@@ -10,8 +10,9 @@ namespace FoodshareMVC.Domain.Interfaces
     public interface IBookingRepository
     {
         void DeleteBooking(int bookingId);
-        void DeleteExpiredBookingAndMakePostActive(int postId);
-        int AddBookingAndMakePostNotActive(int postId, Booking booking);
+        int AddBooking(int postId, Booking booking);
         IQueryable<Booking> GetAllBookings();
+        Booking GetBooking(int bookingId);
+        void DeleteRangeOfBookings(IQueryable<Booking> bookings);
     }
 }

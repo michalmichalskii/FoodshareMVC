@@ -127,5 +127,20 @@ namespace FoodshareMVC.Application.Services
             var post = _mapper.Map<Post>(model);
             _postRepository.UpdatePost(post);
         }
+        public void SetPostActiveAfterBookingExpirationDateHasPassed()
+        {
+            var posts = _postRepository.GetAllPosts()
+                .Where(post => post.IsActive == false)
+                .Where(post => post.Booking == null)
+                .ToList();
+            foreach (var post in posts)
+            {
+                _postRepository.SetPostActive(post.Id);
+            }
+        }
+        public void SetPostNotActive(int postId)
+        {
+            _postRepository.SetPostNotActive(postId);
+        }
     }
 }

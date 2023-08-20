@@ -19,5 +19,7 @@ namespace FoodshareMVC.Application.Interfaces
         void DeletePost(int id);
         ListPostForListVm GetAllPostsForList();
         List<PostForListVm> GetAllActivePostsByCity(string city);
+        void SetPostActiveAfterBookingExpirationDateHasPassed();
+        void SetPostNotActive(int postId);
     }
 }
