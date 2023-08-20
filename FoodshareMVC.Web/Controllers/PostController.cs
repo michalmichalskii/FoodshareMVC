@@ -17,53 +17,37 @@ namespace FoodshareMVC.Web.Controllers
         private readonly IPostService _postService;
         private readonly IBookingService _bookingService;
         private readonly IPhotoService _photoService;
+        private readonly IIPInfoService _iPInfoService;
 
-        public PostController(IPostService postService, IBookingService bookingService, IPhotoService photoService)
+        public PostController(IPostService postService, IBookingService bookingService,
+            IPhotoService photoService, IIPInfoService iPInfoService)
         {
             _postService = postService;
             _bookingService = bookingService;
             _photoService = photoService;
+            _iPInfoService = iPInfoService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var posts = _postService.GetAllPostsForList();
-            foreach (var post in posts.Posts)
-            {
-                _bookingService.DeleteExpiredBookingAndMakePostActive(post.Id);
-            }
-
-            //i dont know is this proper - there is a lot of code
+            _bookingService.DeleteExpiredBooking();
+            _postService.SetPostActiveAfterBookingExpirationDateHasPassed();
+            var ipInfo = _iPInfoService.SetIPInfo();
+            var currentCity = ipInfo.City;
             var listOfPosts = new ListPostForListVm();
-            var ipInfo = new IPInfo();
-            try
+            listOfPosts.Filter.City = ipInfo.City;
+
+            if (ipInfo.City != null)
             {
-                string url = "https://ipinfo.io?token=97d6472d4b29b1";
-                var info = new WebClient().DownloadString(url);
-                ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
-                var myRII = new RegionInfo(ipInfo.Country);
-                ipInfo.Country = myRII.EnglishName;
-
-                listOfPosts.Filter.City = ipInfo.City;
-
-                if (ipInfo.City != null)
-                {
-                    listOfPosts.Posts = _postService.GetAllActivePostsByCity(listOfPosts.Filter.City);
-                }
-                else
-                {
-                    listOfPosts.Posts = null;
-                }
+                var model = _postService.GetAllActivePostsForList(10, 1, "", currentCity, "");
+                model.Filter = listOfPosts.Filter;
+                return View(model);
             }
-            catch (Exception ex)
+            else
             {
-                listOfPosts.Posts = null;
+                return View("Index");
             }
-
-            var model = _postService.GetAllActivePostsForList(10, 1, "", listOfPosts.Filter.City, "");
-            model.Filter = listOfPosts.Filter;
-            return View(model);
         }
 
         //TODO - AFTER MAKING LOGGING SYSYEM - a logged user should see his posts first
@@ -153,6 +137,7 @@ namespace FoodshareMVC.Web.Controllers
         public IActionResult AddBooking(NewBookingVm model)
         {
             var id = _bookingService.AddBooking(model.PostId, model);
+            _postService.SetPostNotActive(model.PostId);
             return RedirectToAction("Index");
         }
 

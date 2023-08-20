@@ -20,6 +20,8 @@ namespace FoodshareMVC.Application
             services.AddTransient<IBookingService, BookingService>();
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<IPhotoService, PhotoService>();
+            services.AddTransient<IIPInfoService, IPInfoService>();
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             return services;
