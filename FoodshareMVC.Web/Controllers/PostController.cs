@@ -121,23 +121,29 @@ namespace FoodshareMVC.Web.Controllers
         //TODO - AFTER MAKING LOGGING SYSYEM - after user logging, booking has to change const value of new booking to specyfic user one. Or maybe make separete form of booking makeing
         //TODO - imo url needs hash
 
-        [HttpGet("Post/AddBooking/{postId}")]
-        public IActionResult AddBooking(int postId, [FromQuery] string pickUpMethod, [FromQuery] string pickUpAddress)
+        [HttpGet]
+        public IActionResult AddBooking(int postId)
         {
+            var post = _postService.GetPost(postId);
+
+            if (post == null)
+                return RedirectToAction("Index");
+
             var model = new NewBookingVm
             {
-                PostId = postId,
-                PickUpMethod = pickUpMethod,
-                PickUpAddress = pickUpAddress
+                PickUpAddress = post.PickUpAddress,
+                PickUpMethod = post.PossibilityPickUpMethod,
+                PostId = postId
             };
             return View(model);
+
         }
 
         [HttpPost]
         public IActionResult AddBooking(NewBookingVm model)
         {
-            var id = _bookingService.AddBooking(model.PostId, model);
-            _postService.SetPostNotActive(model.PostId);
+            var bookingId = _bookingService.AddBooking(model.PostId, model);
+            var postId = _postService.SetPostNotActive(model.PostId);
             return RedirectToAction("Index");
         }
 
@@ -157,7 +163,7 @@ namespace FoodshareMVC.Web.Controllers
         [HttpGet("Post/EditPost/{id}")]
         public IActionResult EditPost(int id)
         {
-            var post = _postService.GetPostForEdit(id);
+            var post = _postService.GetPost(id);
             return View(post);
         }
 

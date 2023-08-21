@@ -14,12 +14,12 @@ namespace FoodshareMVC.Application.Interfaces
         ListPostForListVm GetAllActivePostsForList(int pageSize, int pageNo, string searchCreator, string city, string pickupMethod);
         ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string? searchCreator, string? city, string? pickupMethod);
         int AddPost(NewPostVm newPost);
-        NewPostVm GetPostForEdit(int id);
+        NewPostVm GetPost(int id);
         void UpdatePost(NewPostVm model);
         void DeletePost(int id);
         ListPostForListVm GetAllPostsForList();
         List<PostForListVm> GetAllActivePostsByCity(string city);
         void SetPostActiveAfterBookingExpirationDateHasPassed();
-        void SetPostNotActive(int postId);
+        int SetPostNotActive(int postId);
     }
 }

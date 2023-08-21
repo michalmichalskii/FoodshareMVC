@@ -115,7 +115,7 @@ namespace FoodshareMVC.Application.Services
             return postList;
         }
 
-        public NewPostVm GetPostForEdit(int id)
+        public NewPostVm GetPost(int id)
         {
             var post = _postRepository.GetPost(id);
             var postVm = _mapper.Map<NewPostVm>(post);
@@ -138,9 +138,10 @@ namespace FoodshareMVC.Application.Services
                 _postRepository.SetPostActive(post.Id);
             }
         }
-        public void SetPostNotActive(int postId)
+        public int SetPostNotActive(int postId)
         {
             _postRepository.SetPostNotActive(postId);
+            return postId;
         }
     }
 }
