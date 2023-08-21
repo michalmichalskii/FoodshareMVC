@@ -20,6 +20,5 @@ namespace FoodshareMVC.Domain.Models.BaseInherited
         public string? PickUpAddress { get; set; }
         public string City { get; set; }
         public Booking Booking { get; set; }
-        public ICollection<PostTag> PostTags { get; set; }
     }
 }

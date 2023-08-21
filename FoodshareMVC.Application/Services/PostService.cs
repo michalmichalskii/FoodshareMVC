@@ -4,7 +4,6 @@ using FoodshareMVC.Application.Helpers;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
-using FoodshareMVC.Application.ViewModels.Tasks;
 using FoodshareMVC.Domain.Interfaces;
 using FoodshareMVC.Domain.Models.BaseInherited;
 using Microsoft.AspNetCore.Mvc;

@@ -16,8 +16,6 @@ namespace FoodshareMVC.Infrastructure
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<PostTag> PostTag { get; set; }
-        public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
 
         public Context(DbContextOptions options) : base(options)
@@ -27,17 +25,6 @@ namespace FoodshareMVC.Infrastructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<PostTag>()
-                .HasKey(pt => new { pt.PostId, pt.TagId });
-
-            builder.Entity<PostTag>()
-                .HasOne(pt => pt.Post).WithMany(p => p.PostTags)
-                .HasForeignKey(pt => pt.PostId);
-
-            builder.Entity<PostTag>()
-                .HasOne(pt => pt.Tag).WithMany(t => t.PostTags)
-                .HasForeignKey(pt => pt.TagId);
 
             builder.Entity<Post>()
                 .HasOne(p => p.Booking).WithOne(b => b.Post)

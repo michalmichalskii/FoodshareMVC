@@ -21,14 +21,11 @@ namespace FoodshareMVC.Application.ViewModels.Post
         public string PossibilityPickUpMethod { get; set; }
         public string? PickUpAddress { get; set; }
         public ICollection<Booking> Bookings { get; set; }
-        public ICollection<PostTag> PostTags { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Domain.Models.BaseInherited.Post, PostForListVm>()
                 .ForMember(d => d.Creator, opt => opt.MapFrom(s => s.User.FirstName + " " + s.User.LastName))
-                .ForMember(d => d.Bookings, opt => opt.Ignore())
-                .ForMember(d => d.PostTags, opt => opt.Ignore());
-        }
+                .ForMember(d => d.Bookings, opt => opt.Ignore());        }
     }
 }

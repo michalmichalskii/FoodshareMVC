@@ -20,15 +20,12 @@ namespace FoodshareMVC.Application.ViewModels.Post
         public string? PickUpAddress { get; set; }
         public DateTime CreateDateTime { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
-        public ICollection<PostTag> PostTags { get; set; }
         public IFormFile? Image { get; set; }
         public string City { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<NewPostVm, Domain.Models.BaseInherited.Post>().ReverseMap()
-                .ForMember(d => d.PostTags, opt => opt.Ignore());
-        }
+            profile.CreateMap<NewPostVm, Domain.Models.BaseInherited.Post>().ReverseMap();        }
     }
     public class NewPostValidation : AbstractValidator<NewPostVm>
     {
