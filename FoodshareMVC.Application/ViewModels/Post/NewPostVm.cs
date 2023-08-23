@@ -25,7 +25,8 @@ namespace FoodshareMVC.Application.ViewModels.Post
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<NewPostVm, Domain.Models.BaseInherited.Post>().ReverseMap();        }
+            profile.CreateMap<NewPostVm, Domain.Models.BaseInherited.Post>().ReverseMap();
+        }
     }
     public class NewPostValidation : AbstractValidator<NewPostVm>
     {

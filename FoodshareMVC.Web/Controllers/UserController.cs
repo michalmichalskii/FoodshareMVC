@@ -6,6 +6,7 @@ using FoodshareMVC.Application.Services;
 using FoodshareMVC.Application.ViewModels.Reviews;
 using FoodshareMVC.Domain.Models.BaseInherited;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace FoodshareMVC.Web.Controllers
 {
@@ -22,12 +23,12 @@ namespace FoodshareMVC.Web.Controllers
             _validator = validator;
         }
         [HttpGet("User/{id}")]
-        public ActionResult Index(int id)
+        public IActionResult Index(int id)
         {
             var model = _userService.GetUserWithActivePostsAndGottenReviews(id);
 
             var reviews = _reviewService.GetAllReviewsOfUser(id);
-            int countOfReviews = reviews.Count();
+            int countOfReviews = reviews.Count;
             decimal sumOfStars = 0;
 
             foreach (var review in reviews)
@@ -40,6 +41,7 @@ namespace FoodshareMVC.Web.Controllers
                 model.StarAverage = starAverage;
             }
 
+
             return View(model);
         }
 
@@ -48,22 +50,26 @@ namespace FoodshareMVC.Web.Controllers
         //TODO - AFTER MAKING LOGGING SYSYEM - if user id logged change (in INDEX.cshtml) cont value of revieverId
 
         [HttpPost]
-        public ActionResult AddReview(NewReviewVm newReview)
+        public IActionResult AddReview(NewReviewVm newReview)
         {
             newReview.CreateDateTime = DateTime.Now;
 
             var result = _validator.Validate(newReview);
 
-            if(!result.IsValid)
+            if (!result.IsValid)
             {
-                foreach (var error in result.Errors)
+                result.AddToModelState(this.ModelState);
+
+                foreach (var key in ModelState.Keys)
                 {
-                    ModelState.AddModelError(string.Empty, error.ErrorMessage);
+                    var errors = ModelState[key].Errors;
+                    foreach (var error in errors)
+                    {
+                        TempData["ErrorMessage"] = error.ErrorMessage;
+                    }
                 }
 
-                var model = _userService.GetUserWithActivePostsAndGottenReviews(newReview.ReviewedUserId);
-
-                return RedirectToAction($"Index", model);
+                return RedirectToAction($"Index", new { id = newReview.ReviewedUserId });
             }
 
             var res = _userService.AddReview(newReview);

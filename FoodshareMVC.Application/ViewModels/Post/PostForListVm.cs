@@ -26,6 +26,7 @@ namespace FoodshareMVC.Application.ViewModels.Post
         {
             profile.CreateMap<Domain.Models.BaseInherited.Post, PostForListVm>()
                 .ForMember(d => d.Creator, opt => opt.MapFrom(s => s.User.FirstName + " " + s.User.LastName))
-                .ForMember(d => d.Bookings, opt => opt.Ignore());        }
+                .ForMember(d => d.Bookings, opt => opt.Ignore());        
+        }
     }
 }

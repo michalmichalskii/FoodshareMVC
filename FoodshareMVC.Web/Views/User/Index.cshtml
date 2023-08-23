@@ -23,6 +23,7 @@
 </div>
 
 <h4>@Html.DisplayFor(model => model.City)</h4>
+
 <form asp-action="AddReview" asp-controller="User" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
@@ -37,13 +38,18 @@
             <i class="ratingStar far fa-star" data-value="4"></i>
             <i class="ratingStar far fa-star" data-value="5"></i>
         </div>
-        <input type="hidden" name="AmountOfStars" id="starsValue" />        
+        <input type="hidden" name="AmountOfStars" id="starsValue" />
         <span asp-validation-for="NewReview.AmountOfStars" class="text-danger"></span>
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
     </div>
     <input type="hidden" name="reviewerId" value="1" />
     <button type="submit" class="search-button">Add review</button>
 </form>
-
 <h6>
     Reviews
 </h6>
