@@ -22,7 +22,10 @@ namespace FoodshareMVC.Application.Services
                 config.Value.ApiKey,
                 config.Value.APISecret
                 );
-            _cloudinary = new Cloudinary(acc);
+            if( config.Value.ApiKey != "" )
+            {
+                _cloudinary = new Cloudinary(acc);
+            }
         }
         public ImageUploadResult AddPhoto(IFormFile file)
         {
@@ -37,7 +40,10 @@ namespace FoodshareMVC.Application.Services
                         File = new FileDescription(file.FileName, stream),
                         Transformation = new Transformation().Height(200).Width(200).Crop("fill").Gravity("face")
                     };
-                    uploadResult = _cloudinary.Upload(uploadParams);
+                    if(_cloudinary != null)
+                    {
+                        uploadResult = _cloudinary.Upload(uploadParams);
+                    }
                 }
             }
             return uploadResult;
