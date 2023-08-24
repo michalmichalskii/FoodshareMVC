@@ -36,7 +36,8 @@ namespace FoodshareMVC.Application.Services
         public int AddPost(NewPostVm newPost)
         {
             var result = _photoService.AddPhoto(newPost.Image);
-
+            newPost.CreateDateTime = DateTime.Now;
+            newPost.UpdateDateTime = null;
             var post = _mapper.Map<Post>(newPost);
             if (post.Image != null)
             {
@@ -45,7 +46,17 @@ namespace FoodshareMVC.Application.Services
             var id = _postRepository.AddPost(post);
             return id;
         }
-
+        public void UpdatePost(NewPostVm model)
+        {
+            var result = _photoService.AddPhoto(model.Image);
+            model.UpdateDateTime = DateTime.Now;
+            var post = _mapper.Map<Post>(model);
+            if (post.Image != null)
+            {
+                post.Image = result.Url.ToString();
+            }
+            _postRepository.UpdatePost(post);
+        }
         public void DeletePost(int id)
         {
             _postRepository.DeletePost(id);
@@ -121,11 +132,6 @@ namespace FoodshareMVC.Application.Services
             return postVm;
         }
 
-        public void UpdatePost(NewPostVm model)
-        {
-            var post = _mapper.Map<Post>(model);
-            _postRepository.UpdatePost(post);
-        }
         public void SetPostActiveAfterBookingExpirationDateHasPassed()
         {
             var posts = _postRepository.GetAllPosts()

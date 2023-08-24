@@ -95,6 +95,8 @@
 <p>
     <a asp-action="AddPost">Create New</a>
 </p>
+
+@*filters*@
 <form asp-action="Index" asp-controller="Post" method="post">
     
     <div class="filter-container">
@@ -135,10 +137,17 @@
 
         </div>
     </div>
+
+    @*posts*@
     <div class="row">
         @foreach (var post in Model.Posts)
         {
             <div class="post-container">
+
+                @Html.ActionLink("Edit","EditPost", new {id = post.Id})
+                <br/>
+                @Html.ActionLink("Delete","Delete", new {id = post.Id})
+
                 <div class="post-date">
                     @Html.DisplayFor(modelItem => post.CreateDateTime)
                 </div>

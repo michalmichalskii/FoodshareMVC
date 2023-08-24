@@ -50,7 +50,6 @@ namespace FoodshareMVC.Web.Controllers
             }
         }
 
-        //TODO - AFTER MAKING LOGGING SYSYEM - a logged user should see his posts first
         [HttpPost]
         public IActionResult Index(int pageSize, int? pageNo, string searchCreator, string city, string pickupMethod)
         {
@@ -118,8 +117,7 @@ namespace FoodshareMVC.Web.Controllers
             return View("Index", newModel);
         }
 
-        //TODO - AFTER MAKING LOGGING SYSYEM - after user logging, booking has to change const value of new booking to specyfic user one. Or maybe make separete form of booking makeing
-        //TODO - imo url needs hash
+        //TODO - AFTER MAKING LOGGING SYSYEM - A booking has to get bookerId automatically.
 
         [HttpGet]
         public IActionResult AddBooking(int postId)
@@ -160,7 +158,7 @@ namespace FoodshareMVC.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet("Post/EditPost/{id}")]
+        [HttpGet]
         public IActionResult EditPost(int id)
         {
             var post = _postService.GetPost(id);
@@ -173,6 +171,7 @@ namespace FoodshareMVC.Web.Controllers
             _postService.UpdatePost(model);
             return RedirectToAction("Index");
         }
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             _postService.DeletePost(id);

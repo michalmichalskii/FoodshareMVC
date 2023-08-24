@@ -39,6 +39,10 @@ namespace FoodshareMVC.Infrastructure.Repositories
         {
             _context.Attach(post);
             _context.Entry(post).Property("Text").IsModified = true;
+            _context.Entry(post).Property("Image").IsModified = true;
+            _context.Entry(post).Property("PossibilityPickUpMethod").IsModified = true;
+            _context.Entry(post).Property("PickUpAddress").IsModified = true;
+            _context.Entry(post).Property("City").IsModified = true;
             _context.SaveChanges();
         }
         public Post GetPost(int id)
