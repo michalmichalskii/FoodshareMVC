@@ -18,7 +18,8 @@ namespace FoodshareMVC.Application.ViewModels.Post
         public string Text { get; set; }
         public string PossibilityPickUpMethod { get; set; }
         public string? PickUpAddress { get; set; }
-        public DateTime CreateDateTime { get; set; } = DateTime.Now;
+        public DateTime CreateDateTime { get; set; } 
+        public DateTime? UpdateDateTime { get; set; } 
         public bool IsActive { get; set; } = true;
         public IFormFile? Image { get; set; }
         public string City { get; set; }
