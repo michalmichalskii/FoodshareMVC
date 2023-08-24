@@ -62,26 +62,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var pickUpMethodField = document.getElementById('pickUpMethodField');
-            var pickUpAddressField = document.getElementById('pickUpAddressField');
-
-            function togglePickUpAddressField() {
-                if (pickUpMethodField.value === 'Delivery') {
-                    pickUpAddressField.value = '';
-                    pickUpAddressField.setAttribute('readonly', 'readonly');
-                } else {
-                    pickUpAddressField.removeAttribute('readonly');
-                }
-            }
-
-            togglePickUpAddressField();
-
-            pickUpMethodField.addEventListener('change', function () {
-                togglePickUpAddressField();
-            });
-        });
-    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -9,6 +9,27 @@
     <link rel="stylesheet" href="~/FoodshareMVC.Web.styles.css" asp-append-version="true" />
     <script src="https://kit.fontawesome.com/9201fceb58.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var pickUpMethodField = document.getElementById('pickUpMethodField');
+            var pickUpAddressField = document.getElementById('pickUpAddressField');
+
+            function togglePickUpAddressField() {
+                if (pickUpMethodField.value === 'Delivery') {
+                    pickUpAddressField.value = '';
+                    pickUpAddressField.setAttribute('readonly', 'readonly');
+                } else {
+                    pickUpAddressField.removeAttribute('readonly');
+                }
+            }
+
+            togglePickUpAddressField();
+
+            pickUpMethodField.addEventListener('change', function () {
+                togglePickUpAddressField();
+            });
+        });
+    </script>
 
 </head>
 <body>
