@@ -70,7 +70,7 @@ namespace FoodshareMVC.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //TODO  - AFTER MAKING LOGGING SYSYEM - make login/register page as start one
+            //TODO  - AFTER MAKING LOGGING SYSYEM - make a login/register page as the start one
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Post}/{action=Index}/{id?}");

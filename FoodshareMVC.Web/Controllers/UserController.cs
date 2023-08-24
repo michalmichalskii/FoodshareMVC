@@ -4,9 +4,11 @@ using FluentValidation.Results;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.Services;
 using FoodshareMVC.Application.ViewModels.Reviews;
+using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Domain.Models.BaseInherited;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 
 namespace FoodshareMVC.Web.Controllers
 {
@@ -22,6 +24,7 @@ namespace FoodshareMVC.Web.Controllers
             _reviewService = reviewService;
             _validator = validator;
         }
+        //TODO - AFTER MAKING LOGGING SYSYEM - An url should not have the user's Id
         [HttpGet("User/{id}")]
         public IActionResult Index(int id)
         {
@@ -47,7 +50,7 @@ namespace FoodshareMVC.Web.Controllers
 
 
         //TODO - AFTER MAKING LOGGING SYSYEM - if logged user already wrote review he cannot write another one, also his review should appear first
-        //TODO - AFTER MAKING LOGGING SYSYEM - if user id logged change (in INDEX.cshtml) cont value of revieverId
+        //TODO - AFTER MAKING LOGGING SYSYEM - if user id logged change (in INDEX.cshtml) const value of revieverId
 
         [HttpPost]
         public IActionResult AddReview(NewReviewVm newReview)
