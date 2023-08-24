@@ -15,5 +15,6 @@ namespace FoodshareMVC.Application.Interfaces
         int AddReview(NewReviewVm model);
         UserDetailVm GetUserDetail(int id);
         UserVm GetUserWithActivePostsAndGottenReviews(int id);
+        void UpdateUser(UserDetailVm userDetail);
     }
 }

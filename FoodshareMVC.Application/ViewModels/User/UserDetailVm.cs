@@ -30,7 +30,8 @@ namespace FoodshareMVC.Application.ViewModels.User
         {
             profile.CreateMap<Domain.Models.BaseInherited.User, UserDetailVm>()
                 .ForMember(d => d.Posts, opt => opt.Ignore())
-                .ForMember(d => d.Bookings, opt => opt.Ignore());
+                .ForMember(d => d.Bookings, opt => opt.Ignore())
+                .ReverseMap();
         }
     }
 }

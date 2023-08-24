@@ -67,7 +67,11 @@ namespace FoodshareMVC.Application.Services
             return id;
         }
 
-
+        public void UpdateUser(UserDetailVm userDetail)
+        {
+            var user =_mapper.Map<User>(userDetail);
+            _userRepository.UpdateUser(user);
+        }
     }
 
 }

@@ -35,9 +35,18 @@ namespace FoodshareMVC.Infrastructure.Repositories
             return user.Id;
         }
 
-        public int UpdateUser(User user)//??????
+        public int UpdateUser(User user)
         {
-            _context.Users.Update(user);
+            _context.Users.Attach(user);
+            _context.Entry(user).Property("FirstName").IsModified = true;
+            _context.Entry(user).Property("LastName").IsModified = true;
+            _context.Entry(user).Property("Email").IsModified = true;
+            _context.Entry(user).Property("PhoneNumber").IsModified = true;
+            _context.Entry(user).Property("Street").IsModified = true;
+            _context.Entry(user).Property("FlatNumber").IsModified = true;
+            _context.Entry(user).Property("PostalCode").IsModified = true;
+            _context.Entry(user).Property("City").IsModified = true;
+            _context.Entry(user).Property("Country").IsModified = true;
             _context.SaveChanges();
             return user.Id;
         }
