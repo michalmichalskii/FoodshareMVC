@@ -1,7 +1,7 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using FoodshareMVC.Application.Helpers;
-using FoodshareMVC.Application.Interfaces;
+using FoodshareMVC.Domain.Models.HelperModels;
+using FoodshareMVC.Domain.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -10,12 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodshareMVC.Application.Services
+namespace FoodshareMVC.Infrastructure.Helpers.PhotoManage
 {
-    public class PhotoService : IPhotoService
+    public class PhotoManager : IPhotoManager
     {
         private readonly Cloudinary _cloudinary;
-        public PhotoService(IOptions<CloudinarySettings> config)
+        public PhotoManager(IOptions<CloudinarySettings> config)
         {
             var acc = new Account(
                 config.Value.CloudName,

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodshareMVC.Application.Helpers
+namespace FoodshareMVC.Domain.Models.HelperModels
 {
     public class IPInfo
     {

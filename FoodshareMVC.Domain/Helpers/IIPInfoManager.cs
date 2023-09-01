@@ -1,13 +1,14 @@
-﻿using FoodshareMVC.Application.Helpers;
+﻿using FoodshareMVC.Domain.Models.HelperModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodshareMVC.Application.Interfaces
+
+namespace FoodshareMVC.Domain.Helpers
 {
-    public interface IIPInfoService
+    public interface IIPInfoManager
     {
         IPInfo SetIPInfo();
     }

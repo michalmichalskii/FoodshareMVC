@@ -1,9 +1,9 @@
-﻿using FoodshareMVC.Application.Helpers;
-using FoodshareMVC.Application.Interfaces;
+﻿using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Post.Filters;
 using FoodshareMVC.Application.ViewModels.User;
+using FoodshareMVC.Domain.Helpers;
 using FoodshareMVC.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,16 +16,13 @@ namespace FoodshareMVC.Web.Controllers
     {
         private readonly IPostService _postService;
         private readonly IBookingService _bookingService;
-        private readonly IPhotoService _photoService;
-        private readonly IIPInfoService _iPInfoService;
+        public readonly IIPInfoManager _iPInfoManager;
 
-        public PostController(IPostService postService, IBookingService bookingService,
-            IPhotoService photoService, IIPInfoService iPInfoService)
+        public PostController(IPostService postService, IBookingService bookingService, IIPInfoManager iPInfoManager)
         {
             _postService = postService;
             _bookingService = bookingService;
-            _photoService = photoService;
-            _iPInfoService = iPInfoService;
+            _iPInfoManager = iPInfoManager;
         }
 
         [HttpGet]
@@ -33,7 +30,7 @@ namespace FoodshareMVC.Web.Controllers
         {
             _bookingService.DeleteExpiredBooking();
             _postService.SetPostActiveAfterBookingExpirationDateHasPassed();
-            var ipInfo = _iPInfoService.SetIPInfo();
+            var ipInfo = _iPInfoManager.SetIPInfo();
             var currentCity = ipInfo.City;
             var listOfPosts = new ListPostForListVm();
             listOfPosts.Filter.City = ipInfo.City;
