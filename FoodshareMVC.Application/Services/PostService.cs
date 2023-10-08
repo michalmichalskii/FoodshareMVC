@@ -147,5 +147,12 @@ namespace FoodshareMVC.Application.Services
             _postRepository.SetPostNotActive(postId);
             return postId;
         }
+
+        public User GetPostOwner(int postId)
+        {
+            var post = _postRepository.GetPost(postId);
+            var postOwner = post.User;
+            return postOwner;
+        }
     }
 }

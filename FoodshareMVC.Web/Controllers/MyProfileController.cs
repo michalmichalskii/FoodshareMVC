@@ -1,9 +1,13 @@
 ﻿using FoodshareMVC.Application.Interfaces;
+using FoodshareMVC.Application.Services;
+using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodshareMVC.Web.Controllers
 {
+    [Authorize]
     public class MyProfileController : Controller
     {
         private readonly IUserService _userService;
@@ -17,6 +21,19 @@ namespace FoodshareMVC.Web.Controllers
         {
             var model = _userService.GetUserDetail(id);
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult AddProfileInfo()
+        {
+            return View(new NewUserDetailVm());
+        }
+
+        [HttpPost]
+        public IActionResult AddProfileInfo(NewUserDetailVm model)
+        {
+            var id = _userService.AddProfileInfo(model);
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public IActionResult Edit(int id)

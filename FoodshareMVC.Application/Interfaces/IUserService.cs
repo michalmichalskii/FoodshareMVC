@@ -12,9 +12,12 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IUserService
     {
+        int GetCurrentUserId(string currentUser);
+        UserVm GetUserByEmail(string email);
         int AddReview(NewReviewVm model);
         UserDetailVm GetUserDetail(int id);
         UserVm GetUserWithActivePostsAndGottenReviews(int id);
         void UpdateUser(UserDetailVm userDetail);
+        int AddProfileInfo(NewUserDetailVm model);
     }
 }

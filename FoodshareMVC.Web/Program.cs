@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Extensions.Logging;
 using Serilog.Formatting.Compact;
+using System.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodshareMVC.Web
 {
@@ -31,6 +33,7 @@ namespace FoodshareMVC.Web
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<Context>();
 
             builder.Services.AddApplication();
@@ -43,6 +46,27 @@ namespace FoodshareMVC.Web
             builder.Services.AddTransient<IValidator<NewPostVm>, NewPostValidation>();
             builder.Services.AddTransient<IValidator<NewBookingVm>, NewBookingValidation>();
             builder.Services.AddTransient<IValidator<NewReviewVm>, NewReviewValidation>();
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredUniqueChars = 1;
+
+                //TODO chanage, to true and add some logic
+                options.SignIn.RequireConfirmedEmail = true;
+                options.User.RequireUniqueEmail = true;
+
+            });
+
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            });
 
             var app = builder.Build();
 

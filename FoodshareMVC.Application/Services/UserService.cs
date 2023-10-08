@@ -72,6 +72,35 @@ namespace FoodshareMVC.Application.Services
             var user =_mapper.Map<User>(userDetail);
             _userRepository.UpdateUser(user);
         }
+
+        public UserVm GetUserByEmail(string email)
+        {
+            var user = _userRepository.GetUserByEmail(email);
+            var mappedUser = _mapper.Map<UserVm>(user);
+            return mappedUser;
+        }
+
+        public int GetCurrentUserId(string currentUser)
+        {
+            var user = _userRepository.GetUserByEmail(currentUser);
+            if (currentUser == null)
+            {
+                return -1;
+            }
+            if(user == null)
+            {
+                return -1;
+            }
+            return user.Id;
+        }
+
+        public int AddProfileInfo(NewUserDetailVm model)
+        {
+            //TODO add exception if user alrerady exist (his email)
+            var user = _mapper.Map<User>(model);
+            int mappedUser = _userRepository.AddUser(user);
+            return mappedUser;
+        }
     }
 
 }

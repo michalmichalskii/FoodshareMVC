@@ -5,6 +5,8 @@ using FoodshareMVC.Application.ViewModels.Post.Filters;
 using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Domain.Helpers;
 using FoodshareMVC.Infrastructure.Repositories;
+using FoodshareMVC.Web.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Globalization;
@@ -12,17 +14,21 @@ using System.Net;
 
 namespace FoodshareMVC.Web.Controllers
 {
+    [Authorize]
+    //[CompletedRegisterAuthorize]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
         private readonly IBookingService _bookingService;
         public readonly IIPInfoManager _iPInfoManager;
+        private readonly IUserService _userService;
 
-        public PostController(IPostService postService, IBookingService bookingService, IIPInfoManager iPInfoManager)
+        public PostController(IPostService postService, IBookingService bookingService, IIPInfoManager iPInfoManager, IUserService userService)
         {
             _postService = postService;
             _bookingService = bookingService;
             _iPInfoManager = iPInfoManager;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -35,10 +41,14 @@ namespace FoodshareMVC.Web.Controllers
             var listOfPosts = new ListPostForListVm();
             listOfPosts.Filter.City = ipInfo.City;
 
+            var currentUserId = _userService.GetCurrentUserId(User.Identity.Name);
+
             if (ipInfo.City != null)
             {
                 var model = _postService.GetAllActivePostsForList(10, 1, "", currentCity, "");
                 model.Filter = listOfPosts.Filter;
+                model.CurrentUserId = currentUserId;
+                
                 return View(model);
             }
             else
@@ -154,7 +164,7 @@ namespace FoodshareMVC.Web.Controllers
             var id = _postService.AddPost(model);
             return RedirectToAction("Index");
         }
-
+        [PostOwnerAuthorize]
         [HttpGet]
         public IActionResult EditPost(int id)
         {
@@ -168,6 +178,8 @@ namespace FoodshareMVC.Web.Controllers
             _postService.UpdatePost(model);
             return RedirectToAction("Index");
         }
+
+        [PostOwnerAuthorize]
         [HttpGet]
         public IActionResult Delete(int id)
         {
