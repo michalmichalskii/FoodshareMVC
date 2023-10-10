@@ -23,6 +23,7 @@ namespace FoodshareMVC.Infrastructure
         {
         }
 
+        //TODO - after add userInfo to UserDb, and this user will have post/booking - perosn is unpossible to delete
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

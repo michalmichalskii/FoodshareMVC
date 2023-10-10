@@ -10,8 +10,7 @@ namespace FoodshareMVC.Application.ViewModels.Post
 {
     public class ListPostForListVm
     {
-        //TODO - AFTER MAKING LOGGING SYSYEM - user should can edit only his own posts
-        public int CurrentUserId { get; set; }        //TODO - Im not really sure that there should be prop like this
+        public int CurrentUserId { get; set; }
         public List<PostForListVm> Posts { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }

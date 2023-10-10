@@ -15,7 +15,6 @@ using System.Net;
 namespace FoodshareMVC.Web.Controllers
 {
     [Authorize]
-    //[CompletedRegisterAuthorize]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
@@ -41,13 +40,14 @@ namespace FoodshareMVC.Web.Controllers
             var listOfPosts = new ListPostForListVm();
             listOfPosts.Filter.City = ipInfo.City;
 
-            var currentUserId = _userService.GetCurrentUserId(User.Identity.Name);
+            var currentUser = _userService.GetUserByEmail(User.Identity.Name);
 
             if (ipInfo.City != null)
             {
                 var model = _postService.GetAllActivePostsForList(10, 1, "", currentCity, "");
                 model.Filter = listOfPosts.Filter;
-                model.CurrentUserId = currentUserId;
+                if(currentUser != null)
+                    model.CurrentUserId = currentUser.Id;
                 
                 return View(model);
             }
@@ -124,8 +124,6 @@ namespace FoodshareMVC.Web.Controllers
             return View("Index", newModel);
         }
 
-        //TODO - AFTER MAKING LOGGING SYSYEM - A booking has to get bookerId automatically.
-
         [HttpGet]
         public IActionResult AddBooking(int postId)
         {
@@ -138,7 +136,8 @@ namespace FoodshareMVC.Web.Controllers
             {
                 PickUpAddress = post.PickUpAddress,
                 PickUpMethod = post.PossibilityPickUpMethod,
-                PostId = postId
+                PostId = postId,
+                BookerId = _userService.GetUserByEmail(User.Identity.Name).Id
             };
             return View(model);
 
@@ -161,6 +160,7 @@ namespace FoodshareMVC.Web.Controllers
         [HttpPost]
         public IActionResult AddPost(NewPostVm model)
         {
+            model.CreatorId = _userService.GetUserByEmail(User.Identity.Name).Id;
             var id = _postService.AddPost(model);
             return RedirectToAction("Index");
         }

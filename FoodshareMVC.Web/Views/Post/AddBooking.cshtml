@@ -20,8 +20,7 @@
                 <input type="hidden" asp-for="@Model.PostId" name="postId" value="@Model.PostId" />
             </div>
             <div class="form-group">
-                <label asp-for="BookerId" class="control-label"></label>
-                <input asp-for="BookerId" class="form-control" />
+                <input type="hidden" asp-for="BookerId" class="form-control" />
                 <span asp-validation-for="BookerId" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -12,7 +12,7 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IUserService
     {
-        int GetCurrentUserId(string currentUser);
+        bool IsLoggedUserInDb(string actualUserName);
         UserVm GetUserByEmail(string email);
         int AddReview(NewReviewVm model);
         UserDetailVm GetUserDetail(int id);
