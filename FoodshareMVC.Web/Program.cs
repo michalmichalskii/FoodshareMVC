@@ -17,6 +17,7 @@ using Serilog.Extensions.Logging;
 using Serilog.Formatting.Compact;
 using System.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using FoodshareMVC.Domain.Models;
 
 namespace FoodshareMVC.Web
 {
