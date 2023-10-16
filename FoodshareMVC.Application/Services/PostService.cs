@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using FoodshareMVC.Application.Helpers;
 using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Domain.Interfaces;
 using FoodshareMVC.Domain.Models.BaseInherited;
+using FoodshareMVC.Infrastructure.Helpers.PhotoManage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Newtonsoft.Json;
@@ -24,18 +24,17 @@ namespace FoodshareMVC.Application.Services
     {
         private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
-        private readonly IPhotoService _photoService;
-
-        public PostService(IPostRepository postRepository, IMapper mapper, IPhotoService photoService)
+        private readonly IPhotoManager _photoManager;
+        public PostService(IPostRepository postRepository, IMapper mapper, IPhotoManager photoManager)
         {
             _postRepository = postRepository;
             _mapper = mapper;
-            _photoService = photoService;
+            _photoManager = photoManager;
         }
 
         public int AddPost(NewPostVm newPost)
         {
-            var result = _photoService.AddPhoto(newPost.Image);
+            var result = _photoManager.AddPhoto(newPost.Image);
             newPost.CreateDateTime = DateTime.Now;
             newPost.UpdateDateTime = null;
             var post = _mapper.Map<Post>(newPost);
@@ -48,7 +47,7 @@ namespace FoodshareMVC.Application.Services
         }
         public void UpdatePost(NewPostVm model)
         {
-            var result = _photoService.AddPhoto(model.Image);
+            var result = _photoManager.AddPhoto(model.Image);
             model.UpdateDateTime = DateTime.Now;
             var post = _mapper.Map<Post>(model);
             if (post.Image != null)
@@ -147,6 +146,13 @@ namespace FoodshareMVC.Application.Services
         {
             _postRepository.SetPostNotActive(postId);
             return postId;
+        }
+
+        public User GetPostOwner(int postId)
+        {
+            var post = _postRepository.GetPost(postId);
+            var postOwner = post.User;
+            return postOwner;
         }
     }
 }

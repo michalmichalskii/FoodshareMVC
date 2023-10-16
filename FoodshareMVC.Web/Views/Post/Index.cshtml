@@ -92,13 +92,19 @@
 </style>
 
 <h1>FoodShare</h1>
+@if(Model.CurrentUserId == 0)
+{
+    <p>To get prmissions for adding annd booking posts <a asp-controller="MyProfile" asp-action="AddProfileInfo">complete profile info</a></p>
+}
 <p>
-    <a asp-action="AddPost">Create New</a>
+    <form asp-controller="Post" asp-action="AddPost" method="get">
+        <button type="submit" @(Model.CurrentUserId != 0? "" : "disabled")>Create New</button>
+    </form>
 </p>
 
 @*filters*@
 <form asp-action="Index" asp-controller="Post" method="post">
-    
+
     <div class="filter-container">
         User:
         <div class="search-bar">
@@ -143,11 +149,14 @@
         @foreach (var post in Model.Posts)
         {
             <div class="post-container">
-
-                @Html.ActionLink("Edit","EditPost", new {id = post.Id})
-                <br/>
-                @Html.ActionLink("Delete","Delete", new {id = post.Id})
-
+                @if (Model.CurrentUserId == post.CreatorId)
+                {
+                    <div asp-authorize="PostOwnerAuthorize">
+                        @Html.ActionLink("Edit", "EditPost", new { id = post.Id })
+                        <br />
+                        @Html.ActionLink("Delete", "Delete", new { id = post.Id })
+                    </div>
+                }
                 <div class="post-date">
                     @Html.DisplayFor(modelItem => post.CreateDateTime)
                 </div>
@@ -172,7 +181,12 @@
 
                 </div>
                 <div class="">
-                    <a asp-action="AddBooking" asp-controller="Post" asp-route-postId="@post.Id">Book it!</a>
+                    @if (Model.CurrentUserId != post.CreatorId)
+                    {
+                        <form asp-controller="Post" asp-action="AddBooking" asp-route-postId="@post.Id" method="get">
+                            <button type="submit" @(Model.CurrentUserId != 0 ? "" : "disabled")>Book it!</button>
+                        </form>
+                    }
                 </div>
             </div>
         }

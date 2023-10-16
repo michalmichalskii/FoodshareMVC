@@ -67,5 +67,16 @@ namespace FoodshareMVC.Infrastructure.Repositories
             var posts = _context.Posts.Where(p => p.CreatorId == userId);
             return posts;
         }
+
+        public User GetUserByEmail(string email)
+        {
+            var user = _context.Users.Where(u => u.Email == email);
+            if (user == null)
+                return null;
+
+            var notNullUser = user.FirstOrDefault(u => u.Email == email);
+            return notNullUser;
+
+        }
     }
 }

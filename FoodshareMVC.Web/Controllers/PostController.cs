@@ -1,10 +1,12 @@
-﻿using FoodshareMVC.Application.Helpers;
-using FoodshareMVC.Application.Interfaces;
+﻿using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Post.Filters;
 using FoodshareMVC.Application.ViewModels.User;
+using FoodshareMVC.Domain.Helpers;
 using FoodshareMVC.Infrastructure.Repositories;
+using FoodshareMVC.Web.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Globalization;
@@ -12,20 +14,20 @@ using System.Net;
 
 namespace FoodshareMVC.Web.Controllers
 {
+    [Authorize]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
         private readonly IBookingService _bookingService;
-        private readonly IPhotoService _photoService;
-        private readonly IIPInfoService _iPInfoService;
+        public readonly IIPInfoManager _iPInfoManager;
+        private readonly IUserService _userService;
 
-        public PostController(IPostService postService, IBookingService bookingService,
-            IPhotoService photoService, IIPInfoService iPInfoService)
+        public PostController(IPostService postService, IBookingService bookingService, IIPInfoManager iPInfoManager, IUserService userService)
         {
             _postService = postService;
             _bookingService = bookingService;
-            _photoService = photoService;
-            _iPInfoService = iPInfoService;
+            _iPInfoManager = iPInfoManager;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -33,15 +35,20 @@ namespace FoodshareMVC.Web.Controllers
         {
             _bookingService.DeleteExpiredBooking();
             _postService.SetPostActiveAfterBookingExpirationDateHasPassed();
-            var ipInfo = _iPInfoService.SetIPInfo();
+            var ipInfo = _iPInfoManager.SetIPInfo();
             var currentCity = ipInfo.City;
             var listOfPosts = new ListPostForListVm();
             listOfPosts.Filter.City = ipInfo.City;
+
+            var currentUser = _userService.GetUserByEmail(User.Identity.Name);
 
             if (ipInfo.City != null)
             {
                 var model = _postService.GetAllActivePostsForList(10, 1, "", currentCity, "");
                 model.Filter = listOfPosts.Filter;
+                if(currentUser != null)
+                    model.CurrentUserId = currentUser.Id;
+                
                 return View(model);
             }
             else
@@ -117,8 +124,6 @@ namespace FoodshareMVC.Web.Controllers
             return View("Index", newModel);
         }
 
-        //TODO - AFTER MAKING LOGGING SYSYEM - A booking has to get bookerId automatically.
-
         [HttpGet]
         public IActionResult AddBooking(int postId)
         {
@@ -131,7 +136,8 @@ namespace FoodshareMVC.Web.Controllers
             {
                 PickUpAddress = post.PickUpAddress,
                 PickUpMethod = post.PossibilityPickUpMethod,
-                PostId = postId
+                PostId = postId,
+                BookerId = _userService.GetUserByEmail(User.Identity.Name).Id
             };
             return View(model);
 
@@ -154,10 +160,11 @@ namespace FoodshareMVC.Web.Controllers
         [HttpPost]
         public IActionResult AddPost(NewPostVm model)
         {
+            model.CreatorId = _userService.GetUserByEmail(User.Identity.Name).Id;
             var id = _postService.AddPost(model);
             return RedirectToAction("Index");
         }
-
+        [PostOwnerAuthorize]
         [HttpGet]
         public IActionResult EditPost(int id)
         {
@@ -171,6 +178,8 @@ namespace FoodshareMVC.Web.Controllers
             _postService.UpdatePost(model);
             return RedirectToAction("Index");
         }
+
+        [PostOwnerAuthorize]
         [HttpGet]
         public IActionResult Delete(int id)
         {

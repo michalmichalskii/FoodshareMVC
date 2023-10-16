@@ -1,6 +1,5 @@
-﻿using FoodshareMVC.Application.Helpers;
-using FoodshareMVC.Application.Interfaces;
-using FoodshareMVC.Application.ViewModels.Post;
+﻿using FoodshareMVC.Infrastructure.Helpers.IPInfoManage;
+using FoodshareMVC.Infrastructure.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,10 +8,12 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using FoodshareMVC.Domain.Helpers;
+using FoodshareMVC.Domain.Models.HelperModels;
 
-namespace FoodshareMVC.Application.Services
+namespace FoodshareMVC.Infrastructure.Helpers.IPInfoManage
 {
-    public class IPInfoService : IIPInfoService
+    public class IPInfoManager : IIPInfoManager
     {
         public IPInfo SetIPInfo()
         {

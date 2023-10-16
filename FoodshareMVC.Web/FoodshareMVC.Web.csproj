@@ -8,11 +8,15 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.21" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.13" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.13" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.13" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
 		<PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
 
@@ -21,6 +25,10 @@
   <ItemGroup>
     <ProjectReference Include="..\FoodshareMVC.Application\FoodshareMVC.Application.csproj" />
     <ProjectReference Include="..\FoodshareMVC.Infrastructure\FoodshareMVC.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Data\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties wwwroot_4lib_4bootstrap_4dist_4css_4bootstrap-reboot_1min_1css_1map__JsonSchema="" wwwroot_4lib_4bootstrap_4dist_4js_4bootstrap_1esm_1js_1map__JsonSchema="" /></VisualStudio></ProjectExtensions>

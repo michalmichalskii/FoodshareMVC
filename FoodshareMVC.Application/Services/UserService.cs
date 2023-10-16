@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Reviews;
 using FoodshareMVC.Domain.Models.BaseInherited;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FoodshareMVC.Application.Services
 {
@@ -46,6 +47,7 @@ namespace FoodshareMVC.Application.Services
             {
                 Id = id,
                 City = mappedUser.City,
+                Email = mappedUser.Email,
                 FullName = mappedUser.FullName,
                 Rewievs = reviews,
                 UserPosts = posts
@@ -71,6 +73,31 @@ namespace FoodshareMVC.Application.Services
         {
             var user =_mapper.Map<User>(userDetail);
             _userRepository.UpdateUser(user);
+        }
+
+        public UserVm GetUserByEmail(string email)
+        {
+            var user = _userRepository.GetUserByEmail(email);
+            var mappedUser = _mapper.Map<UserVm>(user);
+            return mappedUser;
+        }
+
+        public int AddProfileInfo(NewUserDetailVm model)
+        {
+            var user = _mapper.Map<User>(model);
+            var userFromDb = _userRepository.GetUserByEmail(model.Email);
+            if (userFromDb != null)
+            {
+                return -1;
+            }
+            int mappedUser = _userRepository.AddUser(user);
+            return mappedUser;
+        }
+
+        public bool IsLoggedUserInDb(string actualUserName)
+        {
+            var userFromDb = _userRepository.GetUserByEmail(actualUserName);
+            return userFromDb != null;
         }
     }
 

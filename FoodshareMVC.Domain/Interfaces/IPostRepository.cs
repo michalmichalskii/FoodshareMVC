@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace FoodshareMVC.Domain.Interfaces
 {
     public interface IPostRepository 
-    { 
+    {
         void DeletePost(int postId);
 
         int AddPost(Post post);

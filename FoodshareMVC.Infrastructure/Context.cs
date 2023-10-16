@@ -1,5 +1,6 @@
 ﻿using FoodshareMVC.Domain.Models;
 using FoodshareMVC.Domain.Models.BaseInherited;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Infrastructure
 {
-    public class Context : IdentityDbContext
+    public class Context : IdentityDbContext<IdentityUser>
     {
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Review> Reviews { get; set; }
@@ -22,6 +23,7 @@ namespace FoodshareMVC.Infrastructure
         {
         }
 
+        //TODO - after add userInfo to UserDb, and this user will have post/booking - perosn is unpossible to delete
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

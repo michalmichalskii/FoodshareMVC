@@ -14,7 +14,7 @@ namespace FoodshareMVC.Domain.Interfaces
         int AddUser(User user);
 
         int UpdateUser(User user);
-
+        User GetUserByEmail(string email);
         User GetUser(int id);
         User GetUserWithDetails(int id);
         IQueryable<Post> GetAllUserActivePosts(int userId);

@@ -1,4 +1,7 @@
-﻿using FoodshareMVC.Domain.Interfaces;
+﻿using FoodshareMVC.Domain.Helpers;
+using FoodshareMVC.Domain.Interfaces;
+using FoodshareMVC.Infrastructure.Helpers.IPInfoManage;
+using FoodshareMVC.Infrastructure.Helpers.PhotoManage;
 using FoodshareMVC.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,6 +20,8 @@ namespace FoodshareMVC.Infrastructure
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBookingRepository, BookingRepository>();
             services.AddTransient<IReviewRepository, ReviewRepository>();
+            services.AddTransient<IIPInfoManager, IPInfoManager>();
+            services.AddTransient<IPhotoManager, PhotoManager>();
             return services;
         }
     }

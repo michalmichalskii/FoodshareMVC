@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodshareMVC.Application.Interfaces
+namespace FoodshareMVC.Infrastructure.Helpers.PhotoManage
 {
-    public interface IPhotoService
+    public interface IPhotoManager
     {
         ImageUploadResult AddPhoto(IFormFile file);
         DeletionResult DeletePhoto(string publicId);

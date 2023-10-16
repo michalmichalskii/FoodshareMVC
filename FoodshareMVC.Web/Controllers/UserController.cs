@@ -24,7 +24,7 @@ namespace FoodshareMVC.Web.Controllers
             _reviewService = reviewService;
             _validator = validator;
         }
-        //TODO - AFTER MAKING LOGGING SYSYEM - An url should not have the user's Id
+
         [HttpGet("User/{id}")]
         public IActionResult Index(int id)
         {
@@ -49,14 +49,13 @@ namespace FoodshareMVC.Web.Controllers
         }
 
 
-        //TODO - AFTER MAKING LOGGING SYSYEM - if logged user already wrote review he cannot write another one, also his review should appear first
-        //TODO - AFTER MAKING LOGGING SYSYEM - if user id logged change (in INDEX.cshtml) const value of revieverId
-
+        //TODO - AFTER MAKING LOGGING SYSYEM - if logged user  his review should appear first
         [HttpPost]
         public IActionResult AddReview(NewReviewVm newReview)
         {
             newReview.CreateDateTime = DateTime.Now;
-
+            newReview.ReviewerId = _userService.GetUserByEmail(User.Identity.Name).Id;
+            
             var result = _validator.Validate(newReview);
 
             if (!result.IsValid)
