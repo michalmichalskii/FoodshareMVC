@@ -18,6 +18,13 @@ namespace FoodshareMVC.Web.Controllers
             _userService = userService;
         }
 
+        [HttpGet("MyProfile/EmailIndex/{email}")]
+        public IActionResult EmailIndex(string email)
+        {
+            var modelId = _userService.GetUserByEmail(email).Id;
+            return RedirectToAction("Index",new {id = modelId});
+        }
+
         [HttpGet("MyProfile/{id}")]
         public IActionResult Index(int id)
         {
