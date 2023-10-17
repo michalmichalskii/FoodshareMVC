@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FoodshareMVC.Application.Mapping;
 using FoodshareMVC.Application.ViewModels.Bookings;
+using FoodshareMVC.Application.ViewModels.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,7 @@ namespace FoodshareMVC.Application.ViewModels.User
         public string City { get; set; }
         public string Country { get; set; }
 
-        public ICollection<Domain.Models.BaseInherited.Post> Posts { get; set; }
-
+        public IEnumerable<PostForListVm> Posts { get; set; }
         public List<BookingForListVm> Bookings { get; set; }
 
         public void Mapping(Profile profile)

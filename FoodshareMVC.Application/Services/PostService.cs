@@ -8,6 +8,7 @@ using FoodshareMVC.Domain.Models.BaseInherited;
 using FoodshareMVC.Infrastructure.Helpers.PhotoManage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -90,6 +91,7 @@ namespace FoodshareMVC.Application.Services
             };
             return postList;
         }
+        //TODO - change all parameters to one filter class
         public ListPostForListVm GetAllActivePostsForList(int pageSize, int pageNo, string searchCreator, string city, string pickupMethod)
         {
 
@@ -153,6 +155,16 @@ namespace FoodshareMVC.Application.Services
             var post = _postRepository.GetPost(postId);
             var postOwner = post.User;
             return postOwner;
+        }
+
+        public List<PostForListVm> GetAllUserPosts(int userId)
+        {
+            var listOfUserPosts = _postRepository.GetAllPosts()
+                .Where(u => u.User.Id == userId)
+                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
+                .ToList();
+
+            return listOfUserPosts;
         }
     }
 }

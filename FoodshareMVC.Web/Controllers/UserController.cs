@@ -16,21 +16,25 @@ namespace FoodshareMVC.Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly IReviewService _reviewService;
+        private readonly IPostService _postService;
         private readonly IValidator<NewReviewVm> _validator;
 
-        public UserController(IUserService userService, IReviewService reviewService, IValidator<NewReviewVm> validator)
+        public UserController(IUserService userService, IReviewService reviewService, IValidator<NewReviewVm> validator, IPostService postService)
         {
             _userService = userService;
             _reviewService = reviewService;
             _validator = validator;
+            _postService = postService;
         }
 
         [HttpGet("User/{id}")]
         public IActionResult Index(int id)
         {
-            var model = _userService.GetUserWithActivePostsAndGottenReviews(id);
+            var model = _userService.GetUserVm(id);
+            model.UserPosts = _postService.GetAllUserPosts(id);
+            model.Rewievs = _reviewService.GetAllReviewsOfUser(id);
 
-            var reviews = _reviewService.GetAllReviewsOfUser(id);
+            var reviews = model.Rewievs;
             int countOfReviews = reviews.Count;
             decimal sumOfStars = 0;
 

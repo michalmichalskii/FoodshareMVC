@@ -17,7 +17,7 @@ namespace FoodshareMVC.Application.ViewModels.User
         public string FullName { get; set; }
         public string Email { get; set; }
         public string City { get; set; }
-        public IEnumerable<ReviewForListVm> Rewievs { get; set; }
+        public List<ReviewForListVm> Rewievs { get; set; }
         public IEnumerable<PostForListVm> UserPosts { get; set; }
         public NewReviewVm NewReview { get; set; }
         public decimal StarAverage { get; set; }

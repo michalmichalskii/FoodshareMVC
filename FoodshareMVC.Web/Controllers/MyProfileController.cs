@@ -12,10 +12,12 @@ namespace FoodshareMVC.Web.Controllers
     public class MyProfileController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IPostService _postService;
 
-        public MyProfileController(IUserService userService)
+        public MyProfileController(IUserService userService, IPostService postService)
         {
             _userService = userService;
+            _postService = postService;
         }
 
         [HttpGet("MyProfile/EmailIndex/{email}")]
@@ -30,6 +32,13 @@ namespace FoodshareMVC.Web.Controllers
         {
             var model = _userService.GetUserDetail(id);
             return View(model);
+        }
+
+        [HttpGet("MyProfile/MyPosts/{id}")]
+        public IActionResult MyPosts(int id)
+        {
+            var userPosts = _postService.GetAllUserPosts(id);
+            return View(userPosts);
         }
 
         [HttpGet("MyProfile/AddProfileInfo")]

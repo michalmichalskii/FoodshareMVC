@@ -12,6 +12,7 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IPostService
     {
+        List<PostForListVm> GetAllUserPosts(int userId);
         User GetPostOwner(int postId);
         ListPostForListVm GetAllActivePostsForList(int pageSize, int pageNo, string searchCreator, string city, string pickupMethod);
         ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string? searchCreator, string? city, string? pickupMethod);

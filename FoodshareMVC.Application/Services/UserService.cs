@@ -27,34 +27,6 @@ namespace FoodshareMVC.Application.Services
             _mapper = mapper;
         }
 
-        public UserVm GetUserWithActivePostsAndGottenReviews(int id)
-        {
-            var user = _userRepository.GetUser(id);
-            var mappedUser = _mapper.Map<UserVm>(user);
-
-            var posts = _userRepository.GetAllUserActivePosts(id)
-                .Where(p => p.IsActive == true)
-                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
-                .OrderByDescending(p => p.CreateDateTime)
-                .ToList();
-
-            var reviews = _reviewRepository.GetAllReviewsAboutUser(id)
-                .ProjectTo<ReviewForListVm>(_mapper.ConfigurationProvider)
-                .OrderByDescending(r => r.CreateDateTime)
-                .ToList();
-
-            var model = new UserVm()
-            {
-                Id = id,
-                City = mappedUser.City,
-                Email = mappedUser.Email,
-                FullName = mappedUser.FullName,
-                Rewievs = reviews,
-                UserPosts = posts
-            };
-            return model;
-        }
-
         public UserDetailVm GetUserDetail(int id)
         {
             var user = _userRepository.GetUserWithDetails(id);
@@ -98,6 +70,13 @@ namespace FoodshareMVC.Application.Services
         {
             var userFromDb = _userRepository.GetUserByEmail(actualUserName);
             return userFromDb != null;
+        }
+
+        public UserVm GetUserVm(int id)
+        {
+            var user = _userRepository.GetUser(id);
+            var mappedUser = _mapper.Map<UserVm>(user);
+            return mappedUser;
         }
     }
 
