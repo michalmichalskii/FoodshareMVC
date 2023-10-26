@@ -92,15 +92,15 @@
 </style>
 
 <h1>FoodShare</h1>
-@if(Model.CurrentUserId == 0)
+@*@if(Model.CurrentUserId == 0)
 {
     <p>To get prmissions for adding annd booking posts <a asp-controller="MyProfile" asp-action="AddProfileInfo">complete profile info</a></p>
-}
-<p>
+}*@
+@*<p>
     <form asp-controller="Post" asp-action="AddPost" method="get">
         <button type="submit" @(Model.CurrentUserId != 0? "" : "disabled")>Create New</button>
     </form>
-</p>
+</p>*@
 
 @*filters*@
 <form asp-action="Index" asp-controller="Post" method="post">
@@ -180,14 +180,14 @@
                     }
 
                 </div>
-                <div class="">
+                @*<div class="">
                     @if (Model.CurrentUserId != post.CreatorId)
                     {
                         <form asp-controller="Post" asp-action="AddBooking" asp-route-postId="@post.Id" method="get">
                             <button type="submit" @(Model.CurrentUserId != 0 ? "" : "disabled")>Book it!</button>
                         </form>
                     }
-                </div>
+                </div>*@
             </div>
         }
     </div>

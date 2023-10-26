@@ -14,8 +14,8 @@ namespace FoodshareMVC.Application.ViewModels.Reviews
     public class NewReviewVm : IMapFrom<Review>
     {
         public int Id { get; set; }
-        public int ReviewerId { get; set; }
-        public int ReviewedUserId { get; set; }
+        public string ReviewerId { get; set; }
+        public string ReviewedUserId { get; set; }
         public int AmountOfStars { get; set; }
         public string? ReviewDescription { get; set; }
         public DateTime CreateDateTime { get; set; }

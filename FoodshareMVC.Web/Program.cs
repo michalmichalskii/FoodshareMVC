@@ -33,9 +33,16 @@ namespace FoodshareMVC.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<Context>();
+            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddRoles<IdentityRole>()
+            //    .AddEntityFrameworkStores<Context>()
+            //    .AddDefaultUI()
+            //    .AddDefaultTokenProviders();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<Context>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddApplication();
             builder.Services.AddInfrastructure();

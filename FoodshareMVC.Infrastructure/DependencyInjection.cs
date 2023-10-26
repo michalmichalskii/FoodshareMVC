@@ -17,7 +17,6 @@ namespace FoodshareMVC.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddTransient<IPostRepository, PostRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBookingRepository, BookingRepository>();
             services.AddTransient<IReviewRepository, ReviewRepository>();
             services.AddTransient<IIPInfoManager, IPInfoManager>();

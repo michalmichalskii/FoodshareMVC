@@ -15,7 +15,7 @@ namespace FoodshareMVC.Application.ViewModels.Post
     public class NewPostVm : IMapFrom<Domain.Models.BaseInherited.Post>
     {
         public int Id { get; set; }
-        public int CreatorId { get; set; }    
+        public string CreatorId { get; set; }    
         public string Text { get; set; }
         public string PossibilityPickUpMethod { get; set; }
         public string? PickUpAddress { get; set; }

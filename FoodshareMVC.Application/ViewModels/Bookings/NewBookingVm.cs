@@ -15,7 +15,7 @@ namespace FoodshareMVC.Application.ViewModels.Bookings
     {
         public int Id { get; set; }
         public int PostId { get; set; }
-        public int BookerId { get; set; }
+        public string BookerId { get; set; }
         public string PickUpMethod { get; set; }
         public string PickUpAddress { get; set; }
         public DateTime BookingExpirationDateTime { get; set; }

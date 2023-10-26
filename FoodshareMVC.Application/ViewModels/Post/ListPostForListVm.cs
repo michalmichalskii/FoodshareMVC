@@ -10,7 +10,7 @@ namespace FoodshareMVC.Application.ViewModels.Post
 {
     public class ListPostForListVm
     {
-        public int CurrentUserId { get; set; }
+        public string CurrentUserId { get; set; }
         public List<PostForListVm> Posts { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }

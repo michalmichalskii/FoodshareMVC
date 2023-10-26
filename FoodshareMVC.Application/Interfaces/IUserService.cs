@@ -2,6 +2,7 @@
 using FoodshareMVC.Application.ViewModels.Reviews;
 using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,11 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IUserService
     {
-        UserVm GetUserVm(int id);
-        bool IsLoggedUserInDb(string actualUserName);
-        UserVm GetUserByEmail(string email);
-        int AddReview(NewReviewVm model);
-        UserDetailVm GetUserDetail(int id);
-        void UpdateUser(UserDetailVm userDetail);
-        int AddProfileInfo(NewUserDetailVm model);
+        UserDetailVm GetUserDetailVmByEmail(string email);
+        bool IsCompletedRegister(string id);
+        UserVm GetUserVm(string id);
+        UserVm GetUserVmByEmail(string email);
+        UserDetailVm GetUserDetail(string id);
+        int UpdateUser(UserDetailVm userDetail);
     }
 }

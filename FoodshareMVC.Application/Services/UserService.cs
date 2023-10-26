@@ -12,71 +12,80 @@ using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Reviews;
 using FoodshareMVC.Domain.Models.BaseInherited;
 using System.Reflection.Metadata.Ecma335;
+using FoodshareMVC.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace FoodshareMVC.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
-        public UserService(IUserRepository userRepository, IReviewRepository reviewRepository, IMapper mapper)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+
+        public UserService(IMapper mapper, UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore)
         {
-            _userRepository = userRepository;
-            _reviewRepository = reviewRepository;
             _mapper = mapper;
+            _userManager = userManager;
+            _userStore = userStore;
         }
 
-        public UserDetailVm GetUserDetail(int id)
+        public UserDetailVm GetUserDetail(string id)
         {
-            var user = _userRepository.GetUserWithDetails(id);
-            var userVm = _mapper.Map<UserDetailVm>(user);
-            return userVm;
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == id);
+            var mappedUser = _mapper.Map<UserDetailVm>(user);
+            return mappedUser;
         }
 
-        public int AddReview(NewReviewVm newReview)
+        public int UpdateUser(UserDetailVm userDetail)
         {
-            var review = _mapper.Map<Review>(newReview);
-            var id = _reviewRepository.AddReview(review);
-            return id;
+            var user = _userManager.FindByIdAsync(userDetail.Id).Result;
+            user.PhoneNumber = userDetail.PhoneNumber;
+            user.FirstName = userDetail.FirstName;
+            user.LastName = userDetail.LastName;
+            user.Street = userDetail.Street;
+            user.City = userDetail.City;
+            user.FlatNumber = userDetail.FlatNumber;
+            user.Country = userDetail.Country;
+            user.PostalCode = userDetail.PostalCode;
+            var updatedUser = Task.WaitAny(_userStore.UpdateAsync(user, CancellationToken.None));
+            return updatedUser;
         }
 
-        public void UpdateUser(UserDetailVm userDetail)
+        public UserVm GetUserVmByEmail(string email)
         {
-            var user =_mapper.Map<User>(userDetail);
-            _userRepository.UpdateUser(user);
+            var user = _userManager.Users.FirstOrDefault(u => u.Email == email);
+            var mappedUser = _mapper.Map<UserVm>(user);
+            return mappedUser;
+        }
+        public UserDetailVm GetUserDetailVmByEmail(string email)
+        {
+            var user = _userManager.Users.FirstOrDefault(u => u.Email == email);
+            var mappedUser = _mapper.Map<UserDetailVm>(user);
+            return mappedUser;
         }
 
-        public UserVm GetUserByEmail(string email)
+        public UserVm GetUserVm(string id)
         {
-            var user = _userRepository.GetUserByEmail(email);
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == id);
             var mappedUser = _mapper.Map<UserVm>(user);
             return mappedUser;
         }
 
-        public int AddProfileInfo(NewUserDetailVm model)
+        public bool IsCompletedRegister(string email)
         {
-            var user = _mapper.Map<User>(model);
-            var userFromDb = _userRepository.GetUserByEmail(model.Email);
-            if (userFromDb != null)
+            var user = _userManager.Users.FirstOrDefault(u => u.Email == email);
+            if (user.City == null
+                || user.Country == null
+                || user.FirstName == null
+                || user.LastName == null
+                || user.FlatNumber == null
+                || user.PostalCode == null
+                || user.Street == null)
             {
-                return -1;
+                return false;
             }
-            int mappedUser = _userRepository.AddUser(user);
-            return mappedUser;
-        }
-
-        public bool IsLoggedUserInDb(string actualUserName)
-        {
-            var userFromDb = _userRepository.GetUserByEmail(actualUserName);
-            return userFromDb != null;
-        }
-
-        public UserVm GetUserVm(int id)
-        {
-            var user = _userRepository.GetUser(id);
-            var mappedUser = _mapper.Map<UserVm>(user);
-            return mappedUser;
+            return true;
         }
     }
 

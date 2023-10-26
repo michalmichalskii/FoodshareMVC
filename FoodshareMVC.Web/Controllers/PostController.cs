@@ -4,13 +4,17 @@ using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Application.ViewModels.Post.Filters;
 using FoodshareMVC.Application.ViewModels.User;
 using FoodshareMVC.Domain.Helpers;
+using FoodshareMVC.Domain.Models;
 using FoodshareMVC.Infrastructure.Repositories;
 using FoodshareMVC.Web.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace FoodshareMVC.Web.Controllers
 {
@@ -20,14 +24,14 @@ namespace FoodshareMVC.Web.Controllers
         private readonly IPostService _postService;
         private readonly IBookingService _bookingService;
         public readonly IIPInfoManager _iPInfoManager;
-        private readonly IUserService _userService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostController(IPostService postService, IBookingService bookingService, IIPInfoManager iPInfoManager, IUserService userService)
+        public PostController(IPostService postService, IBookingService bookingService, IIPInfoManager iPInfoManager, UserManager<ApplicationUser> userManager)
         {
             _postService = postService;
             _bookingService = bookingService;
             _iPInfoManager = iPInfoManager;
-            _userService = userService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -36,18 +40,14 @@ namespace FoodshareMVC.Web.Controllers
             _bookingService.DeleteExpiredBooking();
             _postService.SetPostActiveAfterBookingExpirationDateHasPassed();
             var ipInfo = _iPInfoManager.SetIPInfo();
-            var currentCity = ipInfo.City;
+            var currentCity = RemoveDiacritics(ipInfo.City);
             var listOfPosts = new ListPostForListVm();
-            listOfPosts.Filter.City = ipInfo.City;
-
-            var currentUser = _userService.GetUserByEmail(User.Identity.Name);
+            listOfPosts.Filter.City = RemoveDiacritics(ipInfo.City);
 
             if (ipInfo.City != null)
             {
                 var model = _postService.GetAllActivePostsForList(10, 1, "", currentCity, "");
                 model.Filter = listOfPosts.Filter;
-                if(currentUser != null)
-                    model.CurrentUserId = currentUser.Id;
                 
                 return View(model);
             }
@@ -137,7 +137,7 @@ namespace FoodshareMVC.Web.Controllers
                 PickUpAddress = post.PickUpAddress,
                 PickUpMethod = post.PossibilityPickUpMethod,
                 PostId = postId,
-                BookerId = _userService.GetUserByEmail(User.Identity.Name).Id
+                BookerId = _userManager.GetUserId(User)
             };
             return View(model);
 
@@ -160,7 +160,7 @@ namespace FoodshareMVC.Web.Controllers
         [HttpPost]
         public IActionResult AddPost(NewPostVm model)
         {
-            model.CreatorId = _userService.GetUserByEmail(User.Identity.Name).Id;
+            model.CreatorId = _userManager.GetUserId(User);
             var id = _postService.AddPost(model);
             return RedirectToAction("Index");
         }
@@ -187,5 +187,25 @@ namespace FoodshareMVC.Web.Controllers
             return RedirectToAction("Index");
         }
 
+
+        static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder(capacity: normalizedString.Length);
+
+            for (int i = 0; i < normalizedString.Length; i++)
+            {
+                char c = normalizedString[i];
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder
+                .ToString()
+                .Normalize(NormalizationForm.FormC);
+        }
     }
 }

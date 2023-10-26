@@ -4,6 +4,7 @@ using FoodshareMVC.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodshareMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20231017090925_ChangeUserTable")]
+    partial class ChangeUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,7 +143,7 @@ namespace FoodshareMVC.Infrastructure.Migrations
                     b.HasIndex("PostId")
                         .IsUnique();
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Post", b =>
@@ -187,7 +189,7 @@ namespace FoodshareMVC.Infrastructure.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("FoodshareMVC.Domain.Models.BaseInherited.Review", b =>
@@ -221,7 +223,7 @@ namespace FoodshareMVC.Infrastructure.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

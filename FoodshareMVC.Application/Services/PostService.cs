@@ -4,6 +4,7 @@ using FoodshareMVC.Application.Interfaces;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
 using FoodshareMVC.Domain.Interfaces;
+using FoodshareMVC.Domain.Models;
 using FoodshareMVC.Domain.Models.BaseInherited;
 using FoodshareMVC.Infrastructure.Helpers.PhotoManage;
 using Microsoft.AspNetCore.Mvc;
@@ -69,34 +70,12 @@ namespace FoodshareMVC.Application.Services
                 .ToList();
             return posts;
         }
-        public ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string searchCreator, string city, string pickupMethod)
-        {
-
-            var posts = _postRepository.GetAllActivePosts()
-                .Where(p => p.City == city)
-                .Where(p => p.PossibilityPickUpMethod.Contains(pickupMethod.ToString()))
-                .Where(p => (p.User.FirstName + " " + p.User.LastName).StartsWith(searchCreator))
-                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
-                .ToList();
-            var postsToShow = posts
-                .Skip(pageSize * (pageNo - 1))
-                .Take(pageSize)
-                .ToList();
-            var postList = new ListPostForListVm()
-            {
-                PageSize = pageSize,
-                CurrentPage = pageNo,
-                Posts = postsToShow,
-                Count = posts.Count
-            };
-            return postList;
-        }
+        
         //TODO - change all parameters to one filter class
         public ListPostForListVm GetAllActivePostsForList(int pageSize, int pageNo, string searchCreator, string city, string pickupMethod)
         {
-
             var posts = _postRepository.GetAllActivePosts()
-                .Where(p => p.City == city)
+                .Where(p => p.City.StartsWith(city))
                 .Where(p => p.PossibilityPickUpMethod.Contains(pickupMethod.ToString()))
                 .Where(p => (p.User.FirstName + " " + p.User.LastName).StartsWith(searchCreator))
                 .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
@@ -114,6 +93,27 @@ namespace FoodshareMVC.Application.Services
             };
             return postList;
         }
+
+        public ListPostForListVm GetAllUserPostsForList(int pageSize, int pageNo, string user)
+        {
+            var posts = _postRepository.GetAllActivePosts()
+                .Where(p => (p.User.FirstName + " " + p.User.LastName).StartsWith(user))
+                .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
+                .ToList();
+            var postsToShow = posts
+                .Skip(pageSize * (pageNo - 1))
+                .Take(pageSize)
+                .ToList();
+            var postList = new ListPostForListVm()
+            {
+                PageSize = pageSize,
+                CurrentPage = pageNo,
+                Posts = postsToShow,
+                Count = posts.Count
+            };
+            return postList;
+        }
+
         public ListPostForListVm GetAllPostsForList()
         {
             var posts = _postRepository.GetAllPosts()
@@ -150,17 +150,17 @@ namespace FoodshareMVC.Application.Services
             return postId;
         }
 
-        public User GetPostOwner(int postId)
+        public ApplicationUser GetPostOwner(int postId)
         {
             var post = _postRepository.GetPost(postId);
             var postOwner = post.User;
             return postOwner;
         }
 
-        public List<PostForListVm> GetAllUserPosts(int userId)
+        public List<PostForListVm> GetAllUserPosts(string userId)
         {
             var listOfUserPosts = _postRepository.GetAllPosts()
-                .Where(u => u.User.Id == userId)
+                .Where(u => u.User.Id == userId.ToString())
                 .ProjectTo<PostForListVm>(_mapper.ConfigurationProvider)
                 .ToList();
 

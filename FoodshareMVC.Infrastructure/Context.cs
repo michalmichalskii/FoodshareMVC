@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Infrastructure
 {
-    public class Context : IdentityDbContext<IdentityUser>
+    public class Context : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<User> Users { get; set; }
 
         public Context(DbContextOptions options) : base(options)
         {

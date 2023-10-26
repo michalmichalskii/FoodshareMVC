@@ -24,7 +24,7 @@
 
 <h4>@Html.DisplayFor(model => model.City)</h4>
 
-@if(User.Identity.Name != Model.Email)
+@if(User.Identity.Name != Model.Email && !(Model.MyReviews.Reviews.Any(r => r.CreatorEmail == User.Identity.Name))) //you cant write review for yourself and write only one
 {
     <form asp-action="AddReview" asp-controller="User" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -57,7 +57,7 @@
     Reviews
 </h6>
 <div class="reviews">
-    @foreach (var review in Model.Rewievs)
+    @foreach (var review in Model.MyReviews.Reviews)
     {
         <p>@Html.DisplayFor(model => review.CreateDateTime)</p>
         <p>@Html.DisplayFor(model => review.Creator)</p>
@@ -80,7 +80,7 @@
     Posts
 </h6>
 <div class="posts">
-    @foreach (var post in Model.UserPosts)
+    @foreach (var post in Model.Posts.Posts)
     {
         <p>@Html.DisplayFor(model => post.CreateDateTime)</p>
         <p>@Html.DisplayFor(model => post.Creator)</p>

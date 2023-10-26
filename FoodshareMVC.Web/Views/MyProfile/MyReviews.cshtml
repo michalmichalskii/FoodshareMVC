@@ -1,0 +1,53 @@
+﻿@model FoodshareMVC.Application.ViewModels.User.UserVm
+
+@{
+    ViewData["Title"] = "MyReviews";
+}
+
+<h1>MyReviews</h1>
+<div class="StarAverage">
+    @if (Model.StarAverage > 0)
+    {
+        <span class="text-warning">
+            @for (int i = 0; i < Math.Round(Model.StarAverage); i++)
+            {
+                <i class="fas fa-star"></i>
+            }
+            @for (int i = 0; i < 5 - Math.Round(Model.StarAverage); i++)
+            {
+                <i class="far fa-star"></i>
+            }
+        </span>
+        <text>(@Html.DisplayFor(modelItem => Model.StarAverage))</text>
+    }
+</div>
+<table class="table">
+    <tbody>
+        @foreach (var item in Model.MyReviews.Reviews)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Creator)
+                </td>
+                <td>
+                    <span class="text-warning">
+                        @for (int i = 0; i < item.AmountOfStars; i++)
+                        {
+                            <i class="fas fa-star"></i>
+                        }
+                        @for (int i = 0; i < 5 - item.AmountOfStars; i++)
+                        {
+                            <i class="far fa-star"></i>
+                        }
+                    </span>
+                    <text>(@Html.DisplayFor(modelItem => item.AmountOfStars))</text>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReviewDescription)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

@@ -36,13 +36,16 @@ namespace FoodshareMVC.Infrastructure.Repositories
 
         public IQueryable<Review> GetAllReviewsAboutUser(int userId)
         {
-            var reviews = _context.Reviews.Where(u => u.ReviewedUserId == userId);
+            var reviews = _context.Reviews.Where(u => u.ReviewedUserId == userId.ToString());
             return reviews;
         }
 
-        public int UpdateReview(Review review)
+        public void UpdateReview(Review review)
         {
-            throw new NotImplementedException();
+            _context.Attach(review);
+            _context.Entry(review).Property("AmountOfStars").IsModified = true;
+            _context.Entry(review).Property("ReviewDescription").IsModified = true;
+            _context.SaveChanges();
         }
 
     }

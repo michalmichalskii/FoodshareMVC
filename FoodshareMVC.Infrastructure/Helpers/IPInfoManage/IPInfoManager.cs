@@ -23,8 +23,8 @@ namespace FoodshareMVC.Infrastructure.Helpers.IPInfoManage
                 string url = "https://ipinfo.io?token=97d6472d4b29b1";
                 var info = new WebClient().DownloadString(url);
                 ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
-                var myRII = new RegionInfo(ipInfo.Country);
-                ipInfo.Country = myRII.EnglishName;
+                var myCountryRII = new RegionInfo(ipInfo.Country);
+                ipInfo.Country = myCountryRII.EnglishName;
             }
             catch (Exception)
             {

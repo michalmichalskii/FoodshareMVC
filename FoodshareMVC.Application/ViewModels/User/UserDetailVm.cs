@@ -2,6 +2,7 @@
 using FoodshareMVC.Application.Mapping;
 using FoodshareMVC.Application.ViewModels.Bookings;
 using FoodshareMVC.Application.ViewModels.Post;
+using FoodshareMVC.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace FoodshareMVC.Application.ViewModels.User
 {
-    public class UserDetailVm : IMapFrom<Domain.Models.BaseInherited.User>
+    public class UserDetailVm : IMapFrom<ApplicationUser>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -28,7 +29,7 @@ namespace FoodshareMVC.Application.ViewModels.User
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Domain.Models.BaseInherited.User, UserDetailVm>()
+            profile.CreateMap<ApplicationUser, UserDetailVm>()
                 .ForMember(d => d.Posts, opt => opt.Ignore())
                 .ForMember(d => d.Bookings, opt => opt.Ignore())
                 .ReverseMap();

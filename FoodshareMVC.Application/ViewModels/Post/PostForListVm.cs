@@ -17,7 +17,7 @@ namespace FoodshareMVC.Application.ViewModels.Post
         public string Text { get; set; }
         public DateTime CreateDateTime { get; set; }
         public string Creator { get; set; }
-        public int CreatorId { get; set; }
+        public string CreatorId { get; set; }
         public string PossibilityPickUpMethod { get; set; }
         public string? PickUpAddress { get; set; }
         public ICollection<Booking> Bookings { get; set; }

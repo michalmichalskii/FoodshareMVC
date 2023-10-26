@@ -16,18 +16,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using FoodshareMVC.Domain.Interfaces;
 using FoodshareMVC.Application.Interfaces;
-using FoodshareMVC.Domain.Models.BaseInherited;
+using FoodshareMVC.Domain.Models;
 
 namespace FoodshareMVC.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IUserService _userService;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IUserService userService)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IUserService userService)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -122,10 +122,10 @@ namespace FoodshareMVC.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
 
-                    if (_userService.IsLoggedUserInDb(Input.Email))
+                    if (_userService.IsCompletedRegister(Input.Email))
                         return RedirectToAction($"Index","Post");
                     else
-                        return RedirectToAction("AddProfileInfo", "MyProfile");
+                        return RedirectToAction("Edit", "MyProfile");
 
                 }
                 if (result.RequiresTwoFactor)

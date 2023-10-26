@@ -1,0 +1,56 @@
+﻿@model FoodshareMVC.Application.ViewModels.Post.ListPostForListVm
+
+@{
+    ViewData["Title"] = "MyPosts";
+}
+
+<h1>MyPosts</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <tbody>
+        @foreach (var post in Model.Posts)
+        {
+            <div class="post-container">
+                <div asp-authorize="PostOwnerAuthorize">
+                    @Html.ActionLink("Edit", "EditPost", new { id = post.Id })
+                    <br />
+                    @Html.ActionLink("Delete", "Delete", new { id = post.Id })
+                </div>
+                <div class="post-date">
+                    @Html.DisplayFor(modelItem => post.CreateDateTime)
+                </div>
+                <div class="post-details">
+                    <a href="@Url.Action("Index", "User", new { Id = post.CreatorId })">@Html.DisplayFor(modelItem => post.Creator)</a>
+                </div>
+                <div class="post-text">
+                    @Html.DisplayFor(modelItem => post.Text)
+                </div>
+                <div class="image">
+                    @if (post.Image != null)
+                    {
+                        <img class="some-image" src="@post.Image" alt="Card image cap">
+                    }
+                </div>
+                <div class="post-date">
+                    @Html.DisplayFor(modelItem => post.PossibilityPickUpMethod)
+                    @if (post.PossibilityPickUpMethod == "SelfPickUp" || post.PossibilityPickUpMethod == "SelfPickUpAndDelivery")
+                    {
+                        <text>: @Html.DisplayFor(modelItem => post.PickUpAddress)</text>
+                    }
+
+                </div>
+                @*<div class="">
+            @if (Model.CurrentUserId != post.CreatorId)
+            {
+            <form asp-controller="Post" asp-action="AddBooking" asp-route-postId="@post.Id" method="get">
+            <button type="submit" @(Model.CurrentUserId != 0 ? "" : "disabled")>Book it!</button>
+            </form>
+            }
+            </div>*@
+            </div>
+        }
+    </tbody>
+</table>

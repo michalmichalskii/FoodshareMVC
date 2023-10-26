@@ -1,5 +1,5 @@
 ﻿using FoodshareMVC.Application.ViewModels.Post;
-using FoodshareMVC.Domain.Models.BaseInherited;
+using FoodshareMVC.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,10 +12,10 @@ namespace FoodshareMVC.Application.Interfaces
 {
     public interface IPostService
     {
-        List<PostForListVm> GetAllUserPosts(int userId);
-        User GetPostOwner(int postId);
+        List<PostForListVm> GetAllUserPosts(string userId);
+        ApplicationUser GetPostOwner(int postId);
         ListPostForListVm GetAllActivePostsForList(int pageSize, int pageNo, string searchCreator, string city, string pickupMethod);
-        ListPostForListVm GetAllActivePostsInYourCityForList(int pageSize, int pageNo, string? searchCreator, string? city, string? pickupMethod);
+        ListPostForListVm GetAllUserPostsForList(int pageSize, int pageNo, string user);
         int AddPost(NewPostVm newPost);
         NewPostVm GetPost(int id);
         void UpdatePost(NewPostVm model);

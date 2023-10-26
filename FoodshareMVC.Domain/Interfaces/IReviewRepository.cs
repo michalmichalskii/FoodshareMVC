@@ -14,7 +14,7 @@ namespace FoodshareMVC.Domain.Interfaces
 
         int AddReview(Review review);
 
-        int UpdateReview(Review review);
+        void UpdateReview(Review review);
 
         IQueryable<Review> GetAllReviewsAboutUser(int userId);
         IQueryable<Review> GetAllReviews();

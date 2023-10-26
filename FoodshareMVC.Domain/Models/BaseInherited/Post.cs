@@ -14,8 +14,8 @@ namespace FoodshareMVC.Domain.Models.BaseInherited
         public DateTime CreateDateTime { get; set; }
         public DateTime? UpdateDateTime { get; set; }
         public string PossibilityPickUpMethod { get; set; }
-        public int CreatorId { get; set; }
-        public User User { get; set; }
+        public string CreatorId { get; set; }
+        public ApplicationUser User { get; set; }
         public bool IsActive { get; set; }
         public string? PickUpAddress { get; set; }
         public string City { get; set; }
